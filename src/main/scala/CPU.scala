@@ -21,16 +21,17 @@ class CPU extends MultiIOModule {
   /**
     You need to create the classes for these yourself
     */
-  // val IFBarrier  = Module(new IFBarrier).io
-  // val IDBarrier  = Module(new IDBarrier).io
-  // val EXBarrier  = Module(new EXBarrier).io
+  val IFBarrier  = Module(new IFBarrier).io
+  val IDBarrier  = Module(new IDBarrier).io
+  val EXBarrier  = Module(new EXBarrier).io
   // val MEMBarrier = Module(new MEMBarrier).io
 
   val ID  = Module(new InstructionDecode)
   val IF  = Module(new InstructionFetch)
-  // val EX  = Module(new Execute)
+  val EX  = Module(new Execute)
   val MEM = Module(new MemoryFetch)
   // val WB  = Module(new Execute) (You may not need this one?)
+
 
 
   /**
@@ -54,4 +55,33 @@ class CPU extends MultiIOModule {
   /**
     TODO: Your code here
     */
+  //Signals to IFBarrier
+  IFBarrier.inCurrentPC          := IF.io.PC
+  IFBarrier.inInstruction        := IF.io.instruction
+
+  //Decode stage
+  ID.io.instruction              := IFBarrier.outInstruction
+  ID.io.registerWriteAddress     := 0.U
+  ID.io.registerWriteData        := 0.U
+  ID.io.registerWriteEnable      := 0.U
+
+  //Signals to IDBarrier
+  IDBarrier.inControlSignals     := ID.io.controlSignals
+  IDBarrier.inBranchType         := ID.io.branchType
+  IDBarrier.inOp1Select          := ID.io.op1Select
+  IDBarrier.inOp2Select          := ID.io.op2Select
+  IDBarrier.inImmType            := ID.io.immType
+  IDBarrier.inALUop              := ID.io.ALUop
+  IDBarrier.inReadData1          := ID.io.readData1
+  IDBarrier.inReadData2          := ID.io.readData2
+  //immediate values would also go here
+
+  //Execute stage
+  EX.io.op2Select                := IDBarrier.outOp2Select
+  EX.io.regA                     := IDBarrier.outReadData1
+  EX.io.regB                     := IDBarrier.outReadData2
+  EX.io.ALUop                    := IDBarrier.outALUop
+  //Signals to EXBarrier
+  EXBarrier.inALUResult          := EX.io.ALUResult
+
 }
