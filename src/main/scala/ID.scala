@@ -18,14 +18,32 @@ class InstructionDecode extends MultiIOModule {
 
   val io = IO(
     new Bundle {
+
       /**
         * TODO: Your code here.
         */
+      val instruction          = Input(new Instruction)
+      val registerWriteAddress = Input(UInt())
+      val registerWriteData    = Input(UInt())
+      val registerWriteEnable  = Input(Bool())
+
+
+
+      val controlSignals       = Output(new ControlSignals)
+      val branchType           = Output(UInt(3.W))
+      val op1Select            = Output(UInt(1.W))
+      val op2Select            = Output(UInt(1.W))
+      val immType              = Output(UInt(3.W))
+      val ALUop                = Output(UInt(4.W))
+
+      val readData1            = Output(UInt())
+      val readData2            = Output(UInt())
     }
   )
 
   val registers = Module(new Registers)
   val decoder   = Module(new Decoder).io
+
 
 
   /**
@@ -39,11 +57,40 @@ class InstructionDecode extends MultiIOModule {
   /**
     * TODO: Your code here.
     */
-  registers.io.readAddress1 := 0.U
-  registers.io.readAddress2 := 0.U
-  registers.io.writeEnable  := false.B
-  registers.io.writeAddress := 0.U
-  registers.io.writeData    := 0.U
 
-  decoder.instruction := 0.U.asTypeOf(new Instruction)
+
+  //////////////////////////////////////////
+  // Connect decoder and register signals //
+  //////////////////////////////////////////
+
+  //Connect instruction to decoder
+  decoder.instruction := io.instruction
+  printf("Instruction:\n")
+  printf("opcode:%d        ",      io.instruction.opcode)
+  printf("registerRd:%d          ",  io.instruction.registerRd)
+  printf("registerRs1:%d        ", io.instruction.registerRs1)
+  printf("registerRs2:%d\n\n", io.instruction.registerRs2)
+
+  
+  //Connect decoded signals to outputs
+  io.controlSignals := decoder.controlSignals
+  io.branchType     := decoder.branchType
+  io.op1Select      := decoder.op1Select
+  io.op2Select      := decoder.op2Select
+  io.immType        := decoder.immType
+  io.ALUop          := decoder.ALUop
+
+  //From instruction
+  registers.io.readAddress1 := io.instruction.registerRs1
+  registers.io.readAddress2 := io.instruction.registerRs2
+  //From Readback
+  registers.io.writeEnable  := io.registerWriteEnable
+  registers.io.writeAddress := io.registerWriteAddress
+  registers.io.writeData    := io.registerWriteData
+  //To IDBarrier
+  io.readData1              := registers.io.readData1
+  io.readData2              := registers.io.readData2
+
+  
+
 }
