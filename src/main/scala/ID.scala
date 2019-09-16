@@ -1,8 +1,9 @@
 package FiveStage
 import chisel3._
-import chisel3.util.{ BitPat, MuxCase }
+import chisel3.util._
 import chisel3.experimental.MultiIOModule
 
+import ImmFormat._
 
 class InstructionDecode extends MultiIOModule {
 
@@ -34,6 +35,7 @@ class InstructionDecode extends MultiIOModule {
       val op1Select            = Output(UInt(1.W))
       val op2Select            = Output(UInt(1.W))
       val immType              = Output(UInt(3.W))
+      val immData              = Output(UInt())
       val ALUop                = Output(UInt(4.W))
 
       val readData1            = Output(UInt())
@@ -91,6 +93,25 @@ class InstructionDecode extends MultiIOModule {
   io.readData1              := registers.io.readData1
   io.readData2              := registers.io.readData2
 
+
+  ////////////////////////////
+  // Immediate value lookup //
+  ////////////////////////////
   
+  //Create alu operations map
+  val ImmOpMap = Array(
+    //Key,       Value
+    ITYPE -> io.instruction.immediateIType.asUInt,
+    STYPE -> io.instruction.immediateSType.asUInt,
+    BTYPE -> io.instruction.immediateBType.asUInt,
+    UTYPE -> io.instruction.immediateUType.asUInt,
+    JTYPE -> io.instruction.immediateJType.asUInt,
+    SHAMT -> io.instruction.immediateZType.asUInt,
+    DC    -> io.instruction.immediateIType.asUInt
+  )
+
+  io.immData := MuxLookup(io.immType, 0.U(32.W), ImmOpMap)
+  
+
 
 }

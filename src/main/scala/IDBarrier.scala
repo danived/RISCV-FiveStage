@@ -15,7 +15,8 @@ class IDBarrier extends MultiIOModule {
       val inBranchType      = Input(UInt(3.W))
       val inOp1Select       = Input(UInt(1.W))
       val inOp2Select       = Input(UInt(1.W))
-      val inImmType         = Input(UInt(3.W))
+      val inImmType         = Input(UInt(3.W)) // dont need
+      val inImmData         = Input(UInt())
       val inALUop           = Input(UInt(4.W))
 
       //Output from register - decoder signals
@@ -24,6 +25,7 @@ class IDBarrier extends MultiIOModule {
       val outOp1Select      = Output(UInt(1.W))
       val outOp2Select      = Output(UInt(1.W))
       val outImmType        = Output(UInt(3.W))
+      val outImmData        = Output(UInt())
       val outALUop          = Output(UInt(4.W))
 
       //Input to register - registers signals
@@ -42,6 +44,7 @@ class IDBarrier extends MultiIOModule {
   val op1SelectReg      = RegInit(UInt(), 0.U)
   val op2SelectReg      = RegInit(UInt(), 0.U)
   val immTypeReg        = RegInit(UInt(), 0.U)
+  val immDataReg        = RegInit(UInt(), 0.U)
   val ALUopReg          = RegInit(UInt(), 0.U)
   //Register signal registers
   val readData1Reg      = RegInit(UInt(), 0.U)
@@ -62,6 +65,9 @@ class IDBarrier extends MultiIOModule {
 
   immTypeReg            := io.inImmType
   io.outImmType         := immTypeReg
+
+  immDataReg            := io.inImmData
+  io.outImmData         := immDataReg
 
   ALUopReg              := io.inALUop
   io.outALUop           := ALUopReg
