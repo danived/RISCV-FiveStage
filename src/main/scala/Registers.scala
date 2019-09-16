@@ -39,7 +39,7 @@ class Registers() extends MultiIOModule {
     * Mem creates asynchronous read, synchronous write.
     * In other words, reading is combinatory.
     */
-  val registerFile = Mem(32, UInt(32.W))
+  val registerFile = Mem(32, UInt(32.W)) //change to vector of register to be able to see signal in waveform
 
   val readAddress1 = Wire(UInt(5.W))
   val readAddress2 = Wire(UInt(5.W))
