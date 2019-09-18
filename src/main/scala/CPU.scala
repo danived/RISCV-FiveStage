@@ -1,4 +1,4 @@
-package FiveStage
+package FiveStage // 
 
 import chisel3._
 import chisel3.core.Input
@@ -24,7 +24,7 @@ class CPU extends MultiIOModule {
   val IFBarrier  = Module(new IFBarrier).io
   val IDBarrier  = Module(new IDBarrier).io
   val EXBarrier  = Module(new EXBarrier).io
-  // val MEMBarrier = Module(new MEMBarrier).io
+  val MEMBarrier = Module(new MEMBarrier).io
 
   val ID  = Module(new InstructionDecode)
   val IF  = Module(new InstructionFetch)
@@ -37,9 +37,9 @@ class CPU extends MultiIOModule {
   /**
     * Setup. You should not change this code
     */
-  IF.testHarness.IMEMsetup     := testHarness.setupSignals.IMEMsignals
-  ID.testHarness.registerSetup := testHarness.setupSignals.registerSignals
-  MEM.testHarness.DMEMsetup    := testHarness.setupSignals.DMEMsignals
+  IF.testHarness.IMEMsetup              := testHarness.setupSignals.IMEMsignals
+  ID.testHarness.registerSetup          := testHarness.setupSignals.registerSignals
+  MEM.testHarness.DMEMsetup             := testHarness.setupSignals.DMEMsignals
 
   testHarness.testReadouts.registerRead := ID.testHarness.registerPeek
   testHarness.testReadouts.DMEMread     := MEM.testHarness.DMEMpeek
@@ -47,43 +47,65 @@ class CPU extends MultiIOModule {
   /**
     spying stuff
     */
-  testHarness.regUpdates := ID.testHarness.testUpdates
-  testHarness.memUpdates := MEM.testHarness.testUpdates
-  testHarness.currentPC  := IF.testHarness.PC
+  testHarness.regUpdates                := ID.testHarness.testUpdates
+  testHarness.memUpdates                := MEM.testHarness.testUpdates
+  testHarness.currentPC                 := IF.testHarness.PC
 
 
   /**
     TODO: Your code here
     */
   //Signals to IFBarrier
-  IFBarrier.inCurrentPC          := IF.io.PC
-  IFBarrier.inInstruction        := IF.io.instruction
+  IFBarrier.inCurrentPC       := IF.io.PC
+  IFBarrier.inInstruction     := IF.io.instruction
 
   //Decode stage
-  ID.io.instruction              := IFBarrier.outInstruction
-  ID.io.registerWriteAddress     := 0.U
-  ID.io.registerWriteData        := 0.U
-  ID.io.registerWriteEnable      := 0.U
+  ID.io.instruction           := IFBarrier.outInstruction
+  ID.io.registerWriteAddress  := MEMBarrier.outRd
+  //ID.io.registerWriteData     := 0.U
+  ID.io.registerWriteEnable   := MEMBarrier.outControlSignals.regWrite
 
   //Signals to IDBarrier
-  IDBarrier.inControlSignals     := ID.io.controlSignals
-  IDBarrier.inBranchType         := ID.io.branchType
-  IDBarrier.inOp1Select          := ID.io.op1Select
-  IDBarrier.inOp2Select          := ID.io.op2Select
-  IDBarrier.inImmType            := ID.io.immType
-  IDBarrier.inImmData            := ID.io.immData
-  IDBarrier.inALUop              := ID.io.ALUop
-  IDBarrier.inReadData1          := ID.io.readData1
-  IDBarrier.inReadData2          := ID.io.readData2
-  //immediate values would also go here
+  IDBarrier.inControlSignals  := ID.io.controlSignals
+  IDBarrier.inBranchType      := ID.io.branchType
+  IDBarrier.inOp1Select       := ID.io.op1Select
+  IDBarrier.inOp2Select       := ID.io.op2Select
+  IDBarrier.inImmType         := ID.io.immType
+  IDBarrier.inImmData         := ID.io.immData
+  IDBarrier.inRd              := IFBarrier.outInstruction.registerRd
+  IDBarrier.inALUop           := ID.io.ALUop
+  IDBarrier.inReadData1       := ID.io.readData1
+  IDBarrier.inReadData2       := ID.io.readData2
 
   //Execute stage
-  EX.io.op2Select                := IDBarrier.outOp2Select
-  EX.io.regA                     := IDBarrier.outReadData1
-  EX.io.regB                     := IDBarrier.outReadData2
-  EX.io.immData                  := IDBarrier.outImmData
-  EX.io.ALUop                    := IDBarrier.outALUop
+  EX.io.op2Select             := IDBarrier.outOp2Select
+  EX.io.regA                  := IDBarrier.outReadData1
+  EX.io.regB                  := IDBarrier.outReadData2
+  EX.io.immData               := IDBarrier.outImmData
+  EX.io.ALUop                 := IDBarrier.outALUop
   //Signals to EXBarrier
-  EXBarrier.inALUResult          := EX.io.ALUResult
+  EXBarrier.inALUResult       := EX.io.ALUResult
+  EXBarrier.inControlSignals  := IDBarrier.outControlSignals
+  EXBarrier.inRd              := IDBarrier.outRd
+  EXBarrier.inRegB            := IDBarrier.outReadData2
 
+  //MEM stage
+  MEM.io.dataIn               := EXBarrier.outRegB
+  MEM.io.dataAddress          := EXBarrier.outALUResult
+  MEM.io.writeEnable          := EXBarrier.outControlSignals.memWrite
+
+  //MEMBarrier
+  MEMBarrier.inControlSignals := EXBarrier.outControlSignals
+  MEMBarrier.inALUResult      := EXBarrier.outALUResult
+  MEMBarrier.inRd             := EXBarrier.outRd
+  MEMBarrier.inRegB           := EXBarrier.outRegB
+  MEMBarrier.inMEMData        := MEM.io.dataOut
+
+
+  //WB mux
+  when(MEMBarrier.outControlSignals.memToReg){
+    ID.io.registerWriteData := MEMBarrier.outMEMData
+  }.otherwise{
+    ID.io.registerWriteData := MEMBarrier.outALUResult
+  }
 }

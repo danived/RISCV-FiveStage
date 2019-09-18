@@ -53,6 +53,8 @@ class Decoder() extends Module {
 
     ADD    -> List(N,        Y,        N,       N,        N,       N,    branchType.DC, rs1,       rs2,       ImmFormat.DC, ALUOps.ADD),
     SUB    -> List(N,        Y,        N,       N,        N,       N,    branchType.DC, rs1,       rs2,       ImmFormat.DC, ALUOps.SUB),
+    ADDI   -> List(N,        Y,        N,       N,        N,       N,    branchType.DC, rs1,       imm,       ITYPE,        ALUOps.ADD),
+    
 
     /**
       TODO: Fill in the blanks

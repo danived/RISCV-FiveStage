@@ -1,0 +1,167 @@
+[*]
+[*] GTKWave Analyzer v3.3.98 (w)1999-2019 BSI
+[*] Wed Sep 18 10:38:25 2019
+[*]
+[dumpfile] "/media/daniel/Data/Data/NTNU/TDT4255-Computer_Design/RISCV-FiveStage/waveform/TestRun.vcd"
+[dumpfile_mtime] "Wed Sep 18 10:37:03 2019"
+[dumpfile_size] 412889
+[savefile] "/media/daniel/Data/Data/NTNU/TDT4255-Computer_Design/RISCV-FiveStage/waveform/cpu.gtkw"
+[timestart] 3192
+[size] 1920 1027
+[pos] -1 -1
+*-4.602960 2461 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] Tile.
+[treeopen] Tile.CPU.
+[treeopen] Tile.CPU.EX.
+[treeopen] Tile.CPU.EXBarrier.
+[treeopen] Tile.CPU.ID.
+[treeopen] Tile.CPU.MEM.
+[treeopen] Tile.CPU.MEM.DMEM.
+[sst_width] 352
+[signals_width] 375
+[sst_expanded] 1
+[sst_vpaned_height] 427
+@28
+Tile.CPU.clock
+@22
+Tile.CPU.IF.PC[31:0]
+Tile.CPU.IF.io_instruction_instruction[31:0]
+@800200
+-Register File
+@22
+Tile.CPU.ID.registers.writeAddress[4:0]
+Tile.CPU.ID.registers.writeData[31:0]
+@28
+[color] 3
+Tile.CPU.ID.registers.writeEnable
+@22
+Tile.CPU.ID.registers.registerFile_0[31:0]
+Tile.CPU.ID.registers.registerFile_1[31:0]
+Tile.CPU.ID.registers.registerFile_2[31:0]
+Tile.CPU.ID.registers.registerFile_3[31:0]
+Tile.CPU.ID.registers.registerFile_4[31:0]
+Tile.CPU.ID.registers.registerFile_5[31:0]
+Tile.CPU.ID.registers.registerFile_6[31:0]
+Tile.CPU.ID.registers.registerFile_7[31:0]
+Tile.CPU.ID.registers.registerFile_8[31:0]
+Tile.CPU.ID.registers.registerFile_9[31:0]
+Tile.CPU.ID.registers.registerFile_10[31:0]
+Tile.CPU.ID.registers.registerFile_11[31:0]
+Tile.CPU.ID.registers.registerFile_12[31:0]
+Tile.CPU.ID.registers.registerFile_13[31:0]
+Tile.CPU.ID.registers.registerFile_14[31:0]
+Tile.CPU.ID.registers.registerFile_15[31:0]
+Tile.CPU.ID.registers.registerFile_16[31:0]
+Tile.CPU.ID.registers.registerFile_17[31:0]
+Tile.CPU.ID.registers.registerFile_18[31:0]
+Tile.CPU.ID.registers.registerFile_19[31:0]
+Tile.CPU.ID.registers.registerFile_20[31:0]
+Tile.CPU.ID.registers.registerFile_21[31:0]
+Tile.CPU.ID.registers.registerFile_22[31:0]
+Tile.CPU.ID.registers.registerFile_23[31:0]
+Tile.CPU.ID.registers.registerFile_24[31:0]
+Tile.CPU.ID.registers.registerFile_25[31:0]
+Tile.CPU.ID.registers.registerFile_26[31:0]
+Tile.CPU.ID.registers.registerFile_27[31:0]
+Tile.CPU.ID.registers.registerFile_28[31:0]
+Tile.CPU.ID.registers.registerFile_29[31:0]
+Tile.CPU.ID.registers.registerFile_30[31:0]
+Tile.CPU.ID.registers.registerFile_31[31:0]
+@1000200
+-Register File
+@800200
+-IDBarrier
+@22
+Tile.CPU.IDBarrier.io_outALUop[3:0]
+@28
+Tile.CPU.IDBarrier.io_outControlSignals_memToReg
+Tile.CPU.IDBarrier.io_outControlSignals_memWrite
+Tile.CPU.IDBarrier.io_outControlSignals_regWrite
+Tile.CPU.IDBarrier.io_outOp2Select
+@22
+Tile.CPU.IDBarrier.io_outRd[4:0]
+Tile.CPU.IDBarrier.io_outReadData1[31:0]
+Tile.CPU.IDBarrier.io_outReadData2[31:0]
+@1000200
+-IDBarrier
+@800200
+-EX
+@22
+Tile.CPU.EX.io_ALUop[3:0]
+@23
+Tile.CPU.EX.ALU.io_op1[31:0]
+@28
+Tile.CPU.EX.io_op2Select
+@22
+Tile.CPU.EX.ALU.io_op2[31:0]
+Tile.CPU.EX.io_ALUResult[31:0]
+@1000200
+-EX
+@800200
+-ExBarrier
+@28
+Tile.CPU.EXBarrier.controlSignalsReg_memToReg
+Tile.CPU.EXBarrier.controlSignalsReg_memWrite
+@c00022
+Tile.CPU.EXBarrier.ALUResultReg[31:0]
+@28
+(0)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(1)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(2)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(3)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(4)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(5)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(6)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(7)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(8)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(9)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(10)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(11)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(12)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(13)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(14)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(15)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(16)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(17)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(18)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(19)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(20)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(21)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(22)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(23)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(24)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(25)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(26)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(27)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(28)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(29)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(30)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+(31)Tile.CPU.EXBarrier.ALUResultReg[31:0]
+@1401200
+-group_end
+@22
+Tile.CPU.EXBarrier.io_outRd[4:0]
+@c00022
+Tile.CPU.EXBarrier.rdReg[4:0]
+@28
+(0)Tile.CPU.EXBarrier.rdReg[4:0]
+(1)Tile.CPU.EXBarrier.rdReg[4:0]
+(2)Tile.CPU.EXBarrier.rdReg[4:0]
+(3)Tile.CPU.EXBarrier.rdReg[4:0]
+(4)Tile.CPU.EXBarrier.rdReg[4:0]
+@1401200
+-group_end
+@1000200
+-ExBarrier
+@800200
+-MEMBarrier
+@28
+Tile.CPU.MEMBarrier.io_outControlSignals_memToReg
+Tile.CPU.MEMBarrier.io_outControlSignals_regWrite
+@22
+Tile.CPU.MEMBarrier.io_outMEMData[31:0]
+Tile.CPU.MEMBarrier.io_outALUResult[31:0]
+@1000200
+-MEMBarrier
+[pattern_trace] 1
+[pattern_trace] 0

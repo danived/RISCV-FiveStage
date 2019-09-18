@@ -29,7 +29,6 @@ class InstructionDecode extends MultiIOModule {
       val registerWriteEnable  = Input(Bool())
 
 
-
       val controlSignals       = Output(new ControlSignals)
       val branchType           = Output(UInt(3.W))
       val op1Select            = Output(UInt(1.W))
@@ -46,6 +45,7 @@ class InstructionDecode extends MultiIOModule {
   val registers = Module(new Registers)
   val decoder   = Module(new Decoder).io
 
+  val immData   = Wire(SInt())
 
 
   /**
@@ -85,13 +85,14 @@ class InstructionDecode extends MultiIOModule {
   //From instruction
   registers.io.readAddress1 := io.instruction.registerRs1
   registers.io.readAddress2 := io.instruction.registerRs2
-  //From Readback
+  //From EXbarrier
   registers.io.writeEnable  := io.registerWriteEnable
   registers.io.writeAddress := io.registerWriteAddress
   registers.io.writeData    := io.registerWriteData
   //To IDBarrier
   io.readData1              := registers.io.readData1
   io.readData2              := registers.io.readData2
+
 
 
   ////////////////////////////
@@ -101,17 +102,18 @@ class InstructionDecode extends MultiIOModule {
   //Create alu operations map
   val ImmOpMap = Array(
     //Key,       Value
-    ITYPE -> io.instruction.immediateIType.asUInt,
-    STYPE -> io.instruction.immediateSType.asUInt,
-    BTYPE -> io.instruction.immediateBType.asUInt,
-    UTYPE -> io.instruction.immediateUType.asUInt,
-    JTYPE -> io.instruction.immediateJType.asUInt,
-    SHAMT -> io.instruction.immediateZType.asUInt,
-    DC    -> io.instruction.immediateIType.asUInt
+    ITYPE -> io.instruction.immediateIType,
+    STYPE -> io.instruction.immediateSType,
+    BTYPE -> io.instruction.immediateBType,
+    UTYPE -> io.instruction.immediateUType,
+    JTYPE -> io.instruction.immediateJType,
+    SHAMT -> io.instruction.immediateZType,
+    DC    -> io.instruction.immediateIType
   )
 
-  io.immData := MuxLookup(io.immType, 0.U(32.W), ImmOpMap)
-  
+  immData := MuxLookup(io.immType, 0.S(32.W), ImmOpMap)
 
+  
+  io.immData := Cat(Fill(16, immData(15)), immData(15,0)).asUInt
 
 }

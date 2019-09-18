@@ -17,6 +17,7 @@ class IDBarrier extends MultiIOModule {
       val inOp2Select       = Input(UInt(1.W))
       val inImmType         = Input(UInt(3.W)) // dont need
       val inImmData         = Input(UInt())
+      val inRd              = Input(UInt())
       val inALUop           = Input(UInt(4.W))
 
       //Output from register - decoder signals
@@ -26,6 +27,7 @@ class IDBarrier extends MultiIOModule {
       val outOp2Select      = Output(UInt(1.W))
       val outImmType        = Output(UInt(3.W))
       val outImmData        = Output(UInt())
+      val outRd             = Output(UInt())
       val outALUop          = Output(UInt(4.W))
 
       //Input to register - registers signals
@@ -39,46 +41,50 @@ class IDBarrier extends MultiIOModule {
   )
 
   //Decoder signal registers
-  val controlSignalsReg = Reg(new ControlSignals)
-  val branchTypeReg     = RegInit(UInt(), 0.U)
-  val op1SelectReg      = RegInit(UInt(), 0.U)
-  val op2SelectReg      = RegInit(UInt(), 0.U)
-  val immTypeReg        = RegInit(UInt(), 0.U)
-  val immDataReg        = RegInit(UInt(), 0.U)
-  val ALUopReg          = RegInit(UInt(), 0.U)
+  val controlSignalsReg     = Reg(new ControlSignals)
+  val branchTypeReg         = RegInit(UInt(), 0.U)
+  val op1SelectReg          = RegInit(UInt(), 0.U)
+  val op2SelectReg          = RegInit(UInt(), 0.U)
+  val immTypeReg            = RegInit(UInt(), 0.U)
+  val immDataReg            = RegInit(UInt(), 0.U)
+  val rdReg                 = RegInit(UInt(), 0.U)
+val ALUopReg                = RegInit(UInt(), 0.U)
   //Register signal registers
-  val readData1Reg      = RegInit(UInt(), 0.U)
-  val readData2Reg      = RegInit(UInt(), 0.U)
+  val readData1Reg          = RegInit(UInt(), 0.U)
+  val readData2Reg          = RegInit(UInt(), 0.U)
 
   //Decoder signals registers
-  controlSignalsReg     := io.inControlSignals
-  io.outControlSignals  := controlSignalsReg
+  controlSignalsReg    := io.inControlSignals
+  io.outControlSignals := controlSignalsReg
 
-  branchTypeReg         := io.inBranchType
-  io.outBranchType      := branchTypeReg
+  branchTypeReg        := io.inBranchType
+  io.outBranchType     := branchTypeReg
 
-  op1SelectReg          := io.inOp1Select
-  io.outOp1Select       := op1SelectReg
+  op1SelectReg         := io.inOp1Select
+  io.outOp1Select      := op1SelectReg
 
-  op2SelectReg          := io.inOp2Select
-  io.outOp2Select       := op2SelectReg
+  op2SelectReg         := io.inOp2Select
+  io.outOp2Select      := op2SelectReg
 
-  immTypeReg            := io.inImmType
-  io.outImmType         := immTypeReg
+  immTypeReg           := io.inImmType
+  io.outImmType        := immTypeReg
 
-  immDataReg            := io.inImmData
-  io.outImmData         := immDataReg
+  immDataReg           := io.inImmData
+  io.outImmData        := immDataReg
 
-  ALUopReg              := io.inALUop
-  io.outALUop           := ALUopReg
+  rdReg                := io.inRd
+  io.outRd             := rdReg
+
+  ALUopReg             := io.inALUop
+  io.outALUop          := ALUopReg
 
 
   //Register signals registers
-  readData1Reg          := io.inReadData1
-  io.outReadData1       := readData1Reg
+  readData1Reg         := io.inReadData1
+  io.outReadData1      := readData1Reg
 
-  readData2Reg          := io.inReadData2
-  io.outReadData2       := readData2Reg
+  readData2Reg         := io.inReadData2
+  io.outReadData2      := readData2Reg
 
   printf("Reg A:%d      ", io.inReadData1)
   printf("Reg B:%d\n",     io.inReadData2)
