@@ -1,9 +1,11 @@
 package FiveStage
 import chisel3.iotesters._
+import chisel3.iotesters
 import scala.collection.mutable.LinkedHashMap
-
+import chisel3.experimental.MultiIOModule
 import fileUtils.say
 
+import TestUtils._
 import Data._
 import PrintUtils._
 
@@ -164,7 +166,8 @@ object ChiselTestRunner {
     var sideEffectExtravaganza: Option[(Option[String], List[CircuitTrace])] = None
 
     val error: Either[String, Boolean] = scala.util.Try {
-      chisel3.iotesters.Driver(() => new Tile(), "treadle") { c =>
+//      chisel3.iotesters.Driver(() => new Tile(), "treadle") { c =>
+      Waveform.runWithWaveform("TestRun", () => new Tile()){ c =>
         new PeekPokeTester(c) {
           val testRunner = new ChiselTestRunner(
             binary,
@@ -184,5 +187,22 @@ object ChiselTestRunner {
     error.flatMap{ e =>
       sideEffectExtravaganza.toRight("Unknown test failure, please let me know")
     }
+  }
+}
+
+//Create waveform data
+object Waveform {
+  def runWithWaveform[T <: MultiIOModule](testName: String, dut: () => T)(
+    testerGen: T => PeekPokeTester[T]
+  ): Boolean = {
+    iotesters.Driver.execute(
+      Array(
+        "--backend-name", "treadle",
+        "--generate-vcd-output", "on",
+        "--target-dir", "waveform",
+        "--top-name", testName
+      ),
+      dut
+    )(testerGen)
   }
 }
