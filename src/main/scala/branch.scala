@@ -38,8 +38,8 @@ class Branch extends MultiIOModule {
     lt       -> (io.op1.asSInt < io.op2.asSInt),
     gteu     -> (io.op1 >= io.op2),
     ltu      -> (io.op1.asSInt < io.op2.asSInt),
-//    jump     -> (io.op1 << io.op2(4,0)),
-    DC       -> (io.op1 - io.op2),
+    jump     -> 1.U,
+    DC       -> 0.U,
 
   )
 
