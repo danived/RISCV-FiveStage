@@ -67,11 +67,11 @@ class InstructionDecode extends MultiIOModule {
 
   //Connect instruction to decoder
   decoder.instruction := io.instruction
-  printf("Instruction:\n")
-  printf("opcode:%d        ",      io.instruction.opcode)
-  printf("registerRd:%d          ",  io.instruction.registerRd)
-  printf("registerRs1:%d        ", io.instruction.registerRs1)
-  printf("registerRs2:%d\n\n", io.instruction.registerRs2)
+  // printf("Instruction:\n")
+  // printf("opcode:%d        ",      io.instruction.opcode)
+  // printf("registerRd:%d          ",  io.instruction.registerRd)
+  // printf("registerRs1:%d        ", io.instruction.registerRs1)
+  // printf("registerRs2:%d\n\n", io.instruction.registerRs2)
 
   
   //Connect decoded signals to outputs
@@ -89,6 +89,8 @@ class InstructionDecode extends MultiIOModule {
   registers.io.writeEnable  := io.registerWriteEnable
   registers.io.writeAddress := io.registerWriteAddress
   registers.io.writeData    := io.registerWriteData
+
+
   //To IDBarrier
   io.readData1              := registers.io.readData1
   io.readData2              := registers.io.readData2

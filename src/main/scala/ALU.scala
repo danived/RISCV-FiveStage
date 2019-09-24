@@ -21,22 +21,39 @@ class ALU extends MultiIOModule {
     }
   )
 
+  val ALU_SLT = Wire(UInt())
+  val ALU_SLTU = Wire(UInt())
 
 
+  //ALU_SLT operation
+  when (io.op1.asSInt < io.op2.asSInt){
+    ALU_SLT := 1.U
+  }.otherwise{
+    ALU_SLT := 0.U
+  }
+
+  //ALU_SLTU operation
+  when (io.op1 < io.op2){
+    ALU_SLTU:= 1.U
+  }.otherwise{
+    ALU_SLTU:= 0.U
+  }
+
+ 
   //Create alu operations map
   val ALUopMap = Array(
     //Key,       Value
     ADD      -> (io.op1 + io.op2),
     SUB      -> (io.op1 - io.op2),
+    AND      -> (io.op1 & io.op2),
     OR       -> (io.op1 | io.op2),
     XOR      -> (io.op1 ^ io.op2),
-    SLT      -> (io.op1 - io.op2),
-    SLL      -> (io.op1 - io.op2),
-    SLTU     -> (io.op1 - io.op2),
-    SRL      -> (io.op1 - io.op2),
-    SRA      -> (io.op1 - io.op2),
-    SLTU     -> (io.op1 - io.op2),
-    COPY_A   -> (io.op1),
+    SLT      -> ALU_SLT,
+    SLL      -> (io.op1 << io.op2(4,0)),
+    SLTU     -> ALU_SLTU,
+    SRL      -> (io.op1 >> io.op2(4,0)),
+    SRA      -> (io.op1.asSInt >> io.op2(4,0)).asUInt,
+    INC_4    -> (io.op1 + 4.U),
     COPY_B   -> (io.op2),
     DC       -> (io.op1 - io.op2),
 

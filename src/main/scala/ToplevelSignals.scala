@@ -119,7 +119,7 @@ object ALUOps {
   val SLTU   = 7.U(4.W)
   val SRL    = 8.U(4.W)
   val SRA    = 9.U(4.W)
-  val COPY_A = 10.U(4.W)
+  val INC_4  = 10.U(4.W)
   val COPY_B = 11.U(4.W)
 
   val DC     = 15.U(4.W)

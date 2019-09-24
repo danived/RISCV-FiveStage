@@ -55,6 +55,10 @@ class CPU extends MultiIOModule {
   /**
     TODO: Your code here
     */
+  //Branch addr to IF
+  IF.io.branchAddr            := EXBarrier.outBranchAddr
+  IF.io.controlSignals        := EXBarrier.outControlSignals
+  IF.io.branch                := EXBarrier.outBranch
   //Signals to IFBarrier
   IFBarrier.inCurrentPC       := IF.io.PC
   IFBarrier.inInstruction     := IF.io.instruction
@@ -62,12 +66,12 @@ class CPU extends MultiIOModule {
   //Decode stage
   ID.io.instruction           := IFBarrier.outInstruction
   ID.io.registerWriteAddress  := MEMBarrier.outRd
-  //ID.io.registerWriteData     := 0.U
   ID.io.registerWriteEnable   := MEMBarrier.outControlSignals.regWrite
 
   //Signals to IDBarrier
   IDBarrier.inControlSignals  := ID.io.controlSignals
   IDBarrier.inBranchType      := ID.io.branchType
+  IDBarrier.inPC              := IFBarrier.outCurrentPC
   IDBarrier.inOp1Select       := ID.io.op1Select
   IDBarrier.inOp2Select       := ID.io.op2Select
   IDBarrier.inImmType         := ID.io.immType
@@ -78,14 +82,22 @@ class CPU extends MultiIOModule {
   IDBarrier.inReadData2       := ID.io.readData2
 
   //Execute stage
+  //branch
+  EX.io.PC                    := IDBarrier.outPC
+  EX.io.branchType            := IDBarrier.outBranchType
+  EXBarrier.inBranchAddr      := EX.io.branchAddr
+  //alu
+  EX.io.op1Select             := IDBarrier.outOp1Select
   EX.io.op2Select             := IDBarrier.outOp2Select
   EX.io.regA                  := IDBarrier.outReadData1
   EX.io.regB                  := IDBarrier.outReadData2
   EX.io.immData               := IDBarrier.outImmData
   EX.io.ALUop                 := IDBarrier.outALUop
+
   //Signals to EXBarrier
   EXBarrier.inALUResult       := EX.io.ALUResult
   EXBarrier.inControlSignals  := IDBarrier.outControlSignals
+  EXBarrier.inBranch          := EX.io.branch
   EXBarrier.inRd              := IDBarrier.outRd
   EXBarrier.inRegB            := IDBarrier.outReadData2
 

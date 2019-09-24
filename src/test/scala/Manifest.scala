@@ -18,14 +18,14 @@ import LogParser._
 
 object Manifest {
 
-  val singleTest = "addi.s"
+  val singleTest = "BTreeO3.s"
 
   val nopPadded = true
 
   val singleTestOptions = TestOptions(
     printIfSuccessful  = true,
     printErrors        = true,
-    printParsedProgram = false,
+    printParsedProgram = true,
     printVMtrace       = false,
     printVMfinal       = false,
     printMergedTrace   = true,

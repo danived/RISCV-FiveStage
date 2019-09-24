@@ -12,6 +12,7 @@ class IDBarrier extends MultiIOModule {
     new Bundle {
       //Input to registes - decoder signals
       val inControlSignals  = Input(new ControlSignals)
+      val inPC              = Input(UInt())
       val inBranchType      = Input(UInt(3.W))
       val inOp1Select       = Input(UInt(1.W))
       val inOp2Select       = Input(UInt(1.W))
@@ -22,6 +23,7 @@ class IDBarrier extends MultiIOModule {
 
       //Output from register - decoder signals
       val outControlSignals = Output(new ControlSignals)
+      val outPC             = Output(UInt())
       val outBranchType     = Output(UInt(3.W))
       val outOp1Select      = Output(UInt(1.W))
       val outOp2Select      = Output(UInt(1.W))
@@ -43,12 +45,13 @@ class IDBarrier extends MultiIOModule {
   //Decoder signal registers
   val controlSignalsReg     = Reg(new ControlSignals)
   val branchTypeReg         = RegInit(UInt(), 0.U)
+  val PCReg                 = RegInit(UInt(), 0.U)
   val op1SelectReg          = RegInit(UInt(), 0.U)
   val op2SelectReg          = RegInit(UInt(), 0.U)
   val immTypeReg            = RegInit(UInt(), 0.U)
   val immDataReg            = RegInit(UInt(), 0.U)
   val rdReg                 = RegInit(UInt(), 0.U)
-val ALUopReg                = RegInit(UInt(), 0.U)
+  val ALUopReg              = RegInit(UInt(), 0.U)
   //Register signal registers
   val readData1Reg          = RegInit(UInt(), 0.U)
   val readData2Reg          = RegInit(UInt(), 0.U)
@@ -59,6 +62,9 @@ val ALUopReg                = RegInit(UInt(), 0.U)
 
   branchTypeReg        := io.inBranchType
   io.outBranchType     := branchTypeReg
+
+  PCReg                := io.inPC
+  io.outPC             := PCReg
 
   op1SelectReg         := io.inOp1Select
   io.outOp1Select      := op1SelectReg
@@ -86,6 +92,6 @@ val ALUopReg                = RegInit(UInt(), 0.U)
   readData2Reg         := io.inReadData2
   io.outReadData2      := readData2Reg
 
-  printf("Reg A:%d      ", io.inReadData1)
-  printf("Reg B:%d\n",     io.inReadData2)
+  // printf("Reg A:%d      ", io.inReadData1)
+  // printf("Reg B:%d\n",     io.inReadData2)
 }

@@ -23,14 +23,21 @@ class InstructionFetch extends MultiIOModule {
     */
   val io = IO(
     new Bundle {
-      val PC = Output(UInt())
-      val instruction = Output(new Instruction)
+      val branchAddr     = Input(UInt())
+      val controlSignals = Input(new ControlSignals)
+      val branch         = Input(UInt())
+
+      val PC             = Output(UInt())
+      val instruction    = Output(new Instruction)
     }
   )
 
-  val IMEM = Module(new IMEM)
-  val PC   = RegInit(UInt(32.W), 0.U)
+  val IMEM        = Module(new IMEM)
+  val nextPC      = WireInit(UInt(), 0.U)
+  val PC          = RegInit(UInt(32.W), 0.U)
 
+  val instruction = Wire(new Instruction)
+  val branch      = WireInit(Bool(), false.B)
 
   /**
     * Setup. You should not change this code
@@ -47,15 +54,29 @@ class InstructionFetch extends MultiIOModule {
 
   IMEM.io.instructionAddress := PC
 
-  //Increment PC
-  PC := PC + 4.U
-  printf("PC is :0x%x\n", PC)
-  val instruction = Wire(new Instruction)
+
+  //mux for incremented PC or branch addr
+  when(io.controlSignals.jump | (io.controlSignals.branch & io.branch === 1.U)){
+    //Branch Addr
+    PC := io.branchAddr
+
+    //Sent outputs
+    io.PC := io.branchAddr
+  }.otherwise{
+    //Incremented PC
+    PC := nextPC
+    
+    //Sent outputs
+    io.PC := PC
+  }
+
   instruction := IMEM.io.instruction.asTypeOf(new Instruction)
 
 
-  //Sent outputs 
-  io.PC := PC
+  //Incremented PC
+  nextPC := PC + 4.U
+
+
   io.instruction := instruction
 
   /**
