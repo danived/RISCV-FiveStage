@@ -84,12 +84,12 @@ class Decoder() extends Module {
     JALR   -> List(N,        Y,        N,       N,        N,       Y,    branchType.jump, PC,     imm,       ITYPE,        ALUOps.INC_4),
 
     //Branch instructions
-    BEQ    -> List(N,        N,        N,       N,        Y,       N,    branchType.beq, rs1,      imm,       BTYPE,        ALUOps.SLTU),
-    BNE    -> List(N,        N,        N,       N,        Y,       N,    branchType.neq, rs1,      imm,       BTYPE,        ALUOps.SLTU),
-    BLT    -> List(N,        N,        N,       N,        Y,       N,    branchType.lt,  rs1,      imm,       BTYPE,        ALUOps.SLTU),
-    BGE    -> List(N,        N,        N,       N,        Y,       N,    branchType.gte, rs1,      imm,       BTYPE,        ALUOps.SLTU),
-    BLTU   -> List(N,        N,        N,       N,        Y,       N,    branchType.ltu, rs1,      imm,       BTYPE,        ALUOps.SLTU),
-    BGEU   -> List(N,        N,        N,       N,        Y,       N,    branchType.gteu,rs1,      imm,       BTYPE,        ALUOps.SLTU),
+    BEQ    -> List(N,        N,        N,       N,        Y,       N,    branchType.beq, rs1,      rs2,       BTYPE,        ALUOps.SLTU),
+    BNE    -> List(N,        N,        N,       N,        Y,       N,    branchType.neq, rs1,      rs2,       BTYPE,        ALUOps.SLTU),
+    BLT    -> List(N,        N,        N,       N,        Y,       N,    branchType.lt,  rs1,      rs2,       BTYPE,        ALUOps.SLTU),
+    BGE    -> List(N,        N,        N,       N,        Y,       N,    branchType.gte, rs1,      rs2,       BTYPE,        ALUOps.SLTU),
+    BLTU   -> List(N,        N,        N,       N,        Y,       N,    branchType.ltu, rs1,      rs2,       BTYPE,        ALUOps.SLTU),
+    BGEU   -> List(N,        N,        N,       N,        Y,       N,    branchType.gteu,rs1,      rs2,       BTYPE,        ALUOps.SLTU),
 
     //unsure on these instuction
     LUI    -> List(N,        Y,        N,       N,        N,       N,    branchType.DC, rs1,       imm,       UTYPE,        ALUOps.SLTU),

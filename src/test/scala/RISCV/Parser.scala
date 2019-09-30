@@ -146,8 +146,8 @@ object Parser {
   val multipleInstructions: Parser[List[Op]] = List(
     stringWs("li") ~> (reg <~ sep, (hex | int).map(_.splitHiLo(20))).mapN{ case(rd, (hi, lo)) => {
       List(
-      ArithImm.add(rd, rd, lo),
       LUI(rd, if(lo>0) hi else hi+1),
+      ArithImm.add(rd, rd, lo),
     )}}.map(_.widen[Op]),
 
     // NOTE: THESE ARE NOT PSEUDO-OPS IN RISC-V32I!

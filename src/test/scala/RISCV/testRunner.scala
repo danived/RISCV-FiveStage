@@ -52,7 +52,7 @@ object TestRunner {
                                            1500)
     } yield {
       val traces = mergeTraces(trace, chiselTrace).map(x => printMergedTraces((x), program))
-
+      say (printBinary(binary))
       val programString = printProgram(program)
       val vmTraceString = printVMtrace(trace, program)
       val vmFinalState = finalVM.regs.show
