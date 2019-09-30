@@ -5,6 +5,7 @@ import chisel3.experimental.MultiIOModule
 
 import Op1Select._
 import Op2Select._
+import branchType._
 
 class Execute extends MultiIOModule {
 
@@ -31,15 +32,22 @@ class Execute extends MultiIOModule {
   val alu_operand1 = Wire(UInt())
   val alu_operand2 = Wire(UInt())
 
+  
+
 
   //adder for calculating the branc PC
-  Branch.PC         := io.PC
-  Branch.imm        := io.immData
+//  Branch.PC         := io.PC
+//  Branch.imm        := io.immData
   Branch.branchType := io.branchType
-  Branch.op1        := alu_operand1
-  Branch.op2        := alu_operand2
-  io.branchAddr     := Branch.branchAddr
+  Branch.op1        := io.regA
+  Branch.op2        := io.regB
+//  io.branchAddr     := Branch.branchAddr
   io.branch         := Branch.branch
+
+
+  /////////
+  // ALU //
+  /////////
 
   //Operand 1 Mux
   when(io.op1Select === Op1Select.PC){
@@ -59,7 +67,23 @@ class Execute extends MultiIOModule {
   ALU.op1           :=alu_operand1
   ALU.op2           :=alu_operand2
   ALU.ALUop         :=io.ALUop
-  io.ALUResult      :=ALU.result
+//  io.ALUResult      :=ALU.result
   //  0.U           :=ALU.zero
+
+
+  /////////////////
+  // BRANCH ADDR //
+  /////////////////
+  io.branchAddr := ALU.result
+
+
+  /////////////////////////////
+  // ALU RESULT / PC + 4 MUX //
+  /////////////////////////////
+  when(io.branchType === branchType.jump){
+    io.ALUResult := io.PC + 4.U
+  }.otherwise{
+    io.ALUResult := ALU.result
+  }
 
 }

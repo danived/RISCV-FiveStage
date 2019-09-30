@@ -60,6 +60,7 @@ class CPU extends MultiIOModule {
   IF.io.controlSignals        := EXBarrier.outControlSignals
   IF.io.branch                := EXBarrier.outBranch
   //Signals to IFBarrier
+
   IFBarrier.inCurrentPC       := IF.io.PC
   IFBarrier.inInstruction     := IF.io.instruction
 

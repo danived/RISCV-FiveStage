@@ -10,10 +10,10 @@ class IFBarrier extends MultiIOModule {
 
   val io = IO(
     new Bundle {
-      val inCurrentPC     = Input(UInt())
+      val inCurrentPC     = Input(UInt(32.W))
       val inInstruction   = Input(new Instruction)
 
-      val outCurrentPC    = Output(UInt())
+      val outCurrentPC    = Output(UInt(32.W))
       val outInstruction  = Output(new Instruction)
     }
   )

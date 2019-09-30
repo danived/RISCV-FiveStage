@@ -12,21 +12,21 @@ class Branch extends MultiIOModule {
 
   val io = IO(
     new Bundle {
-      val PC         = Input(UInt())
-      val imm        = Input(UInt())
+    //  val PC         = Input(UInt())
+//      val imm        = Input(UInt())
       val branchType = Input(UInt())
       val op1        = Input(UInt())
       val op2        = Input(UInt())
 
 
-      val branchAddr = Output(UInt())
+  //    val branchAddr = Output(UInt())
       val branch     = Output(UInt())
     }
   )
 
 
   //calculate branch addr
-  io.branchAddr := io.PC + io.imm
+//  io.branchAddr := io.PC + io.imm
 
  
   //Create alu operations map
