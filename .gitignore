@@ -353,3 +353,10 @@ target/
 scratchpad.scala
 log/
 index.html
+
+waveform/
+Edraw/
+_minted*
+notes.org
+*.sh
+exercise.pdf
