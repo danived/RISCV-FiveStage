@@ -17,7 +17,6 @@ class ALU extends MultiIOModule {
       val ALUop   = Input(UInt())
 
       val result  = Output(UInt())
-//      val zero    = Output(Bool())
     }
   )
 
@@ -59,6 +58,7 @@ class ALU extends MultiIOModule {
 
   )
 
+  //set output signal based on the result of the expression in the muxlookup table
   io.result := MuxLookup(io.ALUop, 0.U(32.W), ALUopMap)
 
 }

@@ -46,27 +46,24 @@ class InstructionFetch extends MultiIOModule {
   testHarness.PC := IMEM.testHarness.requestedAddress
 
 
-  /**
-    * TODO: Your code here.
-    * 
-    * You should expand on or rewrite the code below.
-    */
+
 
   IMEM.io.instructionAddress := PC
 
 
-  //mux for incremented PC or branch addr
+  //Mux for controlling which address to go to next
+  //Either the incremented PC or branch address in the case of a jump or branch
   when(io.controlSignals.jump | (io.controlSignals.branch & io.branch === 1.U)){
     //Branch Addr
     PC := io.branchAddr
 
-    //Sent outputs
+    //Send the branch address to the rest of the pipeline
     io.PC := io.branchAddr
   }.otherwise{
     //Incremented PC
     PC := nextPC
     
-    //Sent outputs
+    //Send the PC to the rest of the pipeline
     io.PC := PC
   }
 
@@ -75,7 +72,6 @@ class InstructionFetch extends MultiIOModule {
 
   //Incremented PC
   nextPC := PC + 4.U
-
 
   io.instruction := instruction
 

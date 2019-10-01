@@ -19,15 +19,10 @@ class InstructionDecode extends MultiIOModule {
 
   val io = IO(
     new Bundle {
-
-      /**
-        * TODO: Your code here.
-        */
       val instruction          = Input(new Instruction)
       val registerWriteAddress = Input(UInt())
       val registerWriteData    = Input(UInt())
       val registerWriteEnable  = Input(Bool())
-
 
       val controlSignals       = Output(new ControlSignals)
       val branchType           = Output(UInt(3.W))
@@ -56,23 +51,12 @@ class InstructionDecode extends MultiIOModule {
   testHarness.testUpdates     := registers.testHarness.testUpdates
 
 
-  /**
-    * TODO: Your code here.
-    */
-
-
   //////////////////////////////////////////
   // Connect decoder and register signals //
   //////////////////////////////////////////
 
   //Connect instruction to decoder
   decoder.instruction := io.instruction
-  // printf("Instruction:\n")
-  // printf("opcode:%d        ",      io.instruction.opcode)
-  // printf("registerRd:%d          ",  io.instruction.registerRd)
-  // printf("registerRs1:%d        ", io.instruction.registerRs1)
-  // printf("registerRs2:%d\n\n", io.instruction.registerRs2)
-
   
   //Connect decoded signals to outputs
   io.controlSignals := decoder.controlSignals
@@ -85,11 +69,11 @@ class InstructionDecode extends MultiIOModule {
   //From instruction
   registers.io.readAddress1 := io.instruction.registerRs1
   registers.io.readAddress2 := io.instruction.registerRs2
+
   //From EXbarrier
   registers.io.writeEnable  := io.registerWriteEnable
   registers.io.writeAddress := io.registerWriteAddress
   registers.io.writeData    := io.registerWriteData
-
 
   //To IDBarrier
   io.readData1              := registers.io.readData1
@@ -113,9 +97,10 @@ class InstructionDecode extends MultiIOModule {
     DC    -> io.instruction.immediateIType
   )
 
+  //Set immData
   immData := MuxLookup(io.immType, 0.S(32.W), ImmOpMap)
 
-  
+  //Sign extend immdata
   io.immData := Cat(Fill(16, immData(15)), immData(15,0)).asUInt
 
 }

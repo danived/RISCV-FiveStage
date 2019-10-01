@@ -15,8 +15,8 @@ class Execute extends MultiIOModule {
       val branchType   = Input(UInt())
       val op1Select    = Input(UInt())
       val op2Select    = Input(UInt())
-      val regA         = Input(UInt())
-      val regB         = Input(UInt())
+      val rs1         = Input(UInt())
+      val Rs2         = Input(UInt())
       val immData      = Input(UInt())
       val ALUop        = Input(UInt())
 
@@ -32,16 +32,14 @@ class Execute extends MultiIOModule {
   val alu_operand1 = Wire(UInt())
   val alu_operand2 = Wire(UInt())
 
-  
 
+  //////////////////////
+  // Branch condition //
+  //////////////////////
 
-  //adder for calculating the branc PC
-//  Branch.PC         := io.PC
-//  Branch.imm        := io.immData
   Branch.branchType := io.branchType
-  Branch.op1        := io.regA
-  Branch.op2        := io.regB
-//  io.branchAddr     := Branch.branchAddr
+  Branch.op1        := io.rs1
+  Branch.op2        := io.Rs2
   io.branch         := Branch.branch
 
 
@@ -53,12 +51,12 @@ class Execute extends MultiIOModule {
   when(io.op1Select === Op1Select.PC){
     alu_operand1    := io.PC
   }.otherwise{
-    alu_operand1    := io.regA
+    alu_operand1    := io.rs1
   }
 
   //Operand 2 Mux
   when(io.op2Select === Op2Select.rs2){
-    alu_operand2    := io.regB
+    alu_operand2    := io.Rs2
   }.otherwise{
     alu_operand2    := io.immData
   }
@@ -67,8 +65,6 @@ class Execute extends MultiIOModule {
   ALU.op1           :=alu_operand1
   ALU.op2           :=alu_operand2
   ALU.ALUop         :=io.ALUop
-//  io.ALUResult      :=ALU.result
-  //  0.U           :=ALU.zero
 
 
   /////////////////

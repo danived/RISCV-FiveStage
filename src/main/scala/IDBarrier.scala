@@ -11,23 +11,23 @@ class IDBarrier extends MultiIOModule {
   val io = IO(
     new Bundle {
       //Input to registes - decoder signals
+      val inInstruction     = Input(new Instruction)
       val inControlSignals  = Input(new ControlSignals)
       val inPC              = Input(UInt())
       val inBranchType      = Input(UInt(3.W))
       val inOp1Select       = Input(UInt(1.W))
       val inOp2Select       = Input(UInt(1.W))
-      val inImmType         = Input(UInt(3.W)) // dont need
       val inImmData         = Input(UInt())
       val inRd              = Input(UInt())
       val inALUop           = Input(UInt(4.W))
 
       //Output from register - decoder signals
+      val outInstruction    = Output(new Instruction)
       val outControlSignals = Output(new ControlSignals)
       val outPC             = Output(UInt())
       val outBranchType     = Output(UInt(3.W))
       val outOp1Select      = Output(UInt(1.W))
       val outOp2Select      = Output(UInt(1.W))
-      val outImmType        = Output(UInt(3.W))
       val outImmData        = Output(UInt())
       val outRd             = Output(UInt())
       val outALUop          = Output(UInt(4.W))
@@ -43,12 +43,12 @@ class IDBarrier extends MultiIOModule {
   )
 
   //Decoder signal registers
+  val instructionReg        = Reg(new Instruction)
   val controlSignalsReg     = Reg(new ControlSignals)
   val branchTypeReg         = RegInit(UInt(), 0.U)
   val PCReg                 = RegInit(UInt(), 0.U)
   val op1SelectReg          = RegInit(UInt(), 0.U)
   val op2SelectReg          = RegInit(UInt(), 0.U)
-  val immTypeReg            = RegInit(UInt(), 0.U)
   val immDataReg            = RegInit(UInt(), 0.U)
   val rdReg                 = RegInit(UInt(), 0.U)
   val ALUopReg              = RegInit(UInt(), 0.U)
@@ -57,6 +57,9 @@ class IDBarrier extends MultiIOModule {
   val readData2Reg          = RegInit(UInt(), 0.U)
 
   //Decoder signals registers
+  instructionReg       := io.inInstruction
+  io.outInstruction    := instructionReg
+
   controlSignalsReg    := io.inControlSignals
   io.outControlSignals := controlSignalsReg
 
@@ -71,9 +74,6 @@ class IDBarrier extends MultiIOModule {
 
   op2SelectReg         := io.inOp2Select
   io.outOp2Select      := op2SelectReg
-
-  immTypeReg           := io.inImmType
-  io.outImmType        := immTypeReg
 
   immDataReg           := io.inImmData
   io.outImmData        := immDataReg
@@ -91,7 +91,4 @@ class IDBarrier extends MultiIOModule {
 
   readData2Reg         := io.inReadData2
   io.outReadData2      := readData2Reg
-
-  // printf("Reg A:%d      ", io.inReadData1)
-  // printf("Reg B:%d\n",     io.inReadData2)
 }

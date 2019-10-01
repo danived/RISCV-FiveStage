@@ -18,7 +18,7 @@ import LogParser._
 
 object Manifest {
 
-  val singleTest = "BTreeManyO3.s"
+  val singleTest = "addi.s"
 
   val nopPadded = true
 
@@ -29,7 +29,7 @@ object Manifest {
     printVMtrace       = false,
     printVMfinal       = false,
     printMergedTrace   = true,
-    nopPadded          = nopPadded,
+    nopPadded          = false,
     breakPoints        = Nil, // not implemented
     testName           = singleTest)
 

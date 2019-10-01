@@ -36,14 +36,12 @@ class MemoryFetch() extends MultiIOModule {
   testHarness.DMEMpeek    := DMEM.io.dataOut
   testHarness.testUpdates := DMEM.testHarness.testUpdates
 
-
-  /**
-    * Your code here.
-    */
+  //DMEM
   DMEM.io.dataIn      := io.dataIn
   DMEM.io.dataAddress := io.dataAddress
   DMEM.io.writeEnable := io.writeEnable
 
+  //Read data from DMEM
   io.dataOut          := DMEM.io.dataOut
 
 }

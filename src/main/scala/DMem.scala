@@ -47,6 +47,7 @@ class DMEM extends MultiIOModule {
   testHarness.testUpdates.writeData    := dataSource
   testHarness.testUpdates.writeAddress := addressSource
 
+  
   io.dataOut := data(addressSource)
   when(writeEnableSource){
     data(addressSource) := dataSource

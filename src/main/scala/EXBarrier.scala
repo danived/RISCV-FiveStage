@@ -12,7 +12,7 @@ class EXBarrier extends MultiIOModule {
       val inBranch          = Input(UInt())
       val inControlSignals  = Input(new ControlSignals)
       val inRd              = Input(UInt())
-      val inRegB            = Input(UInt())
+      val inRs2             = Input(UInt())
       val inALUResult       = Input(UInt())
 
       val outBranchAddr     = Output(UInt())
@@ -20,7 +20,7 @@ class EXBarrier extends MultiIOModule {
       val outALUResult      = Output(UInt())
       val outControlSignals = Output(new ControlSignals)
       val outRd             = Output(UInt())
-      val outRegB           = Output(UInt())
+      val outRs2            = Output(UInt())
     }
   )
 
@@ -29,7 +29,7 @@ class EXBarrier extends MultiIOModule {
   val ALUResultReg      = RegInit(UInt(), 0.U)
   val controlSignalsReg = Reg(new ControlSignals)
   val rdReg             = RegInit(UInt(), 0.U)
-  val regBReg           = RegInit(UInt(), 0.U)
+  val rs2Reg            = RegInit(UInt(), 0.U)
 
   branchAddr           := io.inBranchAddr
   io.outBranchAddr     := branchAddr
@@ -46,10 +46,11 @@ class EXBarrier extends MultiIOModule {
   io.outRd             := rdReg
 
   //reg B register
-  regBReg              := io.inRegB
-  io.outRegB           := regBReg
+  rs2Reg              := io.inRs2
+  io.outRs2           := rs2Reg
 
   //ALU result register
   ALUResultReg         := io.inALUResult
   io.outALUResult      := ALUResultReg
 }
+
