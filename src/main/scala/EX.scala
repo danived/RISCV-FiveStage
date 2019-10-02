@@ -11,18 +11,27 @@ class Execute extends MultiIOModule {
 
   val io = IO(
     new Bundle {
-      val PC           = Input(UInt())
-      val branchType   = Input(UInt())
-      val op1Select    = Input(UInt())
-      val op2Select    = Input(UInt())
-      val rs1         = Input(UInt())
-      val Rs2         = Input(UInt())
-      val immData      = Input(UInt())
-      val ALUop        = Input(UInt())
+      val instruction       = Input(new Instruction)
+      val controlSignalsEXB  = Input(new ControlSignals)
+      val controlSignalsMEMB = Input(new ControlSignals)
+      val PC                = Input(UInt())
+      val branchType        = Input(UInt())
+      val op1Select         = Input(UInt())
+      val op2Select         = Input(UInt())
+      val rs1               = Input(UInt())
+      val Rs2               = Input(UInt())
+      val immData           = Input(UInt())
+      val ALUop             = Input(UInt())
+      //Forwarder
+      val rdEXB             = Input(UInt())
+      val ALUresultEXB      = Input(UInt())
+      val rdMEMB            = Input(UInt())
+      val ALUresultMEMB     = Input(UInt())
 
-      val ALUResult    = Output(UInt())
-      val branchAddr   = Output(UInt())
-      val branch       = Output(UInt())
+
+      val ALUResult         = Output(UInt())
+      val branchAddr        = Output(UInt())
+      val branch            = Output(UInt())
     }
   )
 
@@ -81,5 +90,10 @@ class Execute extends MultiIOModule {
   }.otherwise{
     io.ALUResult := ALU.result
   }
+
+
+
+  //legg til forwarder
+
 
 }

@@ -78,6 +78,9 @@ class CPU extends MultiIOModule {
   IDBarrier.inReadData2       := ID.io.readData2
 
   //Execute stage
+  EX.io.instruction           := IDBarrier.outInstruction
+  EX.io.controlSignalsEXB     := EXBarrier.outControlSignals
+  EX.io.controlSignalsMEMB    := MEMBarrier.outControlSignals
   EX.io.PC                    := IDBarrier.outPC
   EX.io.branchType            := IDBarrier.outBranchType
   EX.io.op1Select             := IDBarrier.outOp1Select
@@ -86,6 +89,10 @@ class CPU extends MultiIOModule {
   EX.io.Rs2                   := IDBarrier.outReadData2
   EX.io.immData               := IDBarrier.outImmData
   EX.io.ALUop                 := IDBarrier.outALUop
+  EX.io.rdEXB                 := EXBarrier.outRd
+  EX.io.ALUresultEXB          := EXBarrier.outALUResult
+  EX.io.rdMEMB                := MEMBarrier.outRd
+  EX.io.ALUresultMEMB         := MEMBarrier.outALUResult
   EXBarrier.inBranchAddr      := EX.io.branchAddr
 
   //Signals to EXBarrier
