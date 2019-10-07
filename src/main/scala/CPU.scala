@@ -76,6 +76,7 @@ class CPU extends MultiIOModule {
   IDBarrier.inALUop           := ID.io.ALUop
   IDBarrier.inReadData1       := ID.io.readData1
   IDBarrier.inReadData2       := ID.io.readData2
+  IDBarrier.freeze := true.B
 
   //Execute stage
   EX.io.instruction           := IDBarrier.outInstruction

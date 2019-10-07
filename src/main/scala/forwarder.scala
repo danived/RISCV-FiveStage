@@ -7,36 +7,49 @@ class Forwarder extends MultiIOModule {
 
   val io = IO(
     new Bundle {
-      val instruction        = Input(new Instruction)
+      val regAddr            = Input(UInt())
       val controlSignalsEXB  = Input(new ControlSignals)
       val controlSignalsMEMB = Input(new ControlSignals)
+      val regData            = Input(UInt())
       val rdEXB              = Input(UInt())
       val ALUresultEXB       = Input(UInt())
       val rdMEMB             = Input(UInt())
       val ALUresultMEMB      = Input(UInt())
 
-      val forward            = Output(Bool())
-      val forwardSelect      = Output(UInt())
-
+      val operandData        = Output(UInt())
     }
   )
 
-  //check if rs1 or rs2 is rd of EXB or MEMB
-  when((io.instruction.registerRs1 === io.rdEXB) & io.controlSignalsEXB.regWrite){
-    io.forward := true.B
+  val forward       = Wire(Bool())
+  val forwardSelect = Wire(UInt())
 
-  }.elsewhen((io.instruction.registerRs2 === io.rdEXB) & io.controlSignalsEXB.regWrite){
-    io.forward := true.B
+  //check if data should be forwarded
+  when((io.regAddr === io.rdEXB) & io.controlSignalsEXB.regWrite){
+    forward := true.B
+    forwardSelect := ForwardSelect.EX
 
-  }.elsewhen((io.instruction.registerRs1 === io.rdMEMB) & io.controlSignalsMEMB.regWrite){
-    io.forward := true.B
-
-  }.elsewhen((io.instruction.registerRs2 === io.rdMEMB) & io.controlSignalsMEMB.regWrite){
-    io.forward := true.B
-
+  }.elsewhen((io.regAddr === io.rdMEMB) & io.controlSignalsMEMB.regWrite){
+    forward := true.B
+    forwardSelect := ForwardSelect.MEM
   }
   .otherwise{
-    io.forward := false.B
+    forward       := false.B
+    forwardSelect := ForwardSelect.DC
+  }
+
+
+  //assign correct data to operandData
+  when(forward){
+    //if forwarding, send correct forward data to operand
+    when(forwardSelect === ForwardSelect.EX){
+      io.operandData := io.ALUresultEXB
+    }.otherwise{
+      io.operandData := io.ALUresultMEMB
+    }
+
+  }.otherwise{
+    //if not forwarding, send regdata to operand
+    io.operandData := io.regData
   }
 
 

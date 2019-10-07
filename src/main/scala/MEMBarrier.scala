@@ -11,7 +11,7 @@ class MEMBarrier extends MultiIOModule {
       //val inPCBranch      = Input(UInt())
       val inControlSignals  = Input(new ControlSignals)
       val inRd              = Input(UInt())
-      val inRs2            = Input(UInt())
+      val inRs2             = Input(UInt())
       val inMEMData         = Input(UInt())
       val inALUResult       = Input(UInt())
 

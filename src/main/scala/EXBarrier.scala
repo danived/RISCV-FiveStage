@@ -8,12 +8,12 @@ class EXBarrier extends MultiIOModule {
 
   val io = IO(
     new Bundle {
-      val inBranchAddr      = Input(UInt())
-      val inBranch          = Input(UInt())
+      val inBranchAddr      = Input(UInt(32.W))
+      val inBranch          = Input(UInt(1.W))
       val inControlSignals  = Input(new ControlSignals)
-      val inRd              = Input(UInt())
-      val inRs2             = Input(UInt())
-      val inALUResult       = Input(UInt())
+      val inRd              = Input(UInt(5.W))
+      val inRs2             = Input(UInt(5.W))
+      val inALUResult       = Input(UInt(32.W))
 
       val outBranchAddr     = Output(UInt())
       val outBranch         = Output(UInt())
