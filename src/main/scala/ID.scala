@@ -39,6 +39,8 @@ class InstructionDecode extends MultiIOModule {
 
   val registers = Module(new Registers)
   val decoder   = Module(new Decoder).io
+  val bypassRs1 = Module(new RegisterBypass).io
+  val bypassRs2 = Module(new RegisterBypass).io
 
   val immData   = Wire(SInt())
 
@@ -76,8 +78,23 @@ class InstructionDecode extends MultiIOModule {
   registers.io.writeData    := io.registerWriteData
 
   //To IDBarrier
-  io.readData1              := registers.io.readData1
-  io.readData2              := registers.io.readData2
+  /////////////////////////////////////////////////////////////////////////
+  // Bypass muxes, IF reading register which is currently being written    //
+  // send the write value to IDBarrier instead of current register value //
+  /////////////////////////////////////////////////////////////////////////
+  bypassRs1.readAddr     := io.instruction.registerRs1
+  bypassRs1.writeAddr    := io.registerWriteAddress
+  bypassRs1.writeEnable  := io.registerWriteEnable
+  bypassRs1.registerData := registers.io.readData1
+  bypassRs1.writeData    := io.registerWriteData
+  io.readData1           := bypassRs1.outData
+
+  bypassRs2.readAddr     := io.instruction.registerRs2
+  bypassRs2.writeAddr    := io.registerWriteAddress
+  bypassRs2.writeEnable  := io.registerWriteEnable
+  bypassRs2.registerData := registers.io.readData2
+  bypassRs2.writeData    := io.registerWriteData
+  io.readData2           := bypassRs2.outData
 
 
 
@@ -102,5 +119,7 @@ class InstructionDecode extends MultiIOModule {
 
   //Sign extend immdata
   io.immData := Cat(Fill(16, immData(15)), immData(15,0)).asUInt
+
+
 
 }

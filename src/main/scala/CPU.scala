@@ -65,18 +65,18 @@ class CPU extends MultiIOModule {
   ID.io.registerWriteEnable   := MEMBarrier.outControlSignals.regWrite
 
   //Signals to IDBarrier
-  IDBarrier.inInstruction     := ID.io.instruction
-  IDBarrier.inControlSignals  := ID.io.controlSignals
-  IDBarrier.inBranchType      := ID.io.branchType
-  IDBarrier.inPC              := IFBarrier.outCurrentPC
-  IDBarrier.inOp1Select       := ID.io.op1Select
-  IDBarrier.inOp2Select       := ID.io.op2Select
-  IDBarrier.inImmData         := ID.io.immData
-  IDBarrier.inRd              := IFBarrier.outInstruction.registerRd
-  IDBarrier.inALUop           := ID.io.ALUop
-  IDBarrier.inReadData1       := ID.io.readData1
-  IDBarrier.inReadData2       := ID.io.readData2
-  IDBarrier.freeze := true.B
+  IDBarrier.inInstruction    := ID.io.instruction
+  IDBarrier.inControlSignals := ID.io.controlSignals
+  IDBarrier.inBranchType     := ID.io.branchType
+  IDBarrier.inPC             := IFBarrier.outCurrentPC
+  IDBarrier.inOp1Select      := ID.io.op1Select
+  IDBarrier.inOp2Select      := ID.io.op2Select
+  IDBarrier.inImmData        := ID.io.immData
+  IDBarrier.inRd             := IFBarrier.outInstruction.registerRd
+  IDBarrier.inALUop          := ID.io.ALUop
+  IDBarrier.inReadData1      := ID.io.readData1
+  IDBarrier.inReadData2      := ID.io.readData2
+  IDBarrier.freeze           := false.B
 
   //Execute stage
   EX.io.instruction           := IDBarrier.outInstruction

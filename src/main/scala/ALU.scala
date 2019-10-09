@@ -16,7 +16,7 @@ class ALU extends MultiIOModule {
       val op2     = Input(UInt())
       val ALUop   = Input(UInt())
 
-      val result  = Output(UInt())
+      val result  = Output(UInt(32.W))
     }
   )
 

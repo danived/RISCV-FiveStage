@@ -18,9 +18,9 @@ import LogParser._
 
 object Manifest {
 
-  val singleTest = "addi.s"
+  val singleTest = "forward1.s"
 
-  val nopPadded = true
+  val nopPadded = false
 
   val singleTestOptions = TestOptions(
     printIfSuccessful  = true,
@@ -29,7 +29,7 @@ object Manifest {
     printVMtrace       = false,
     printVMfinal       = false,
     printMergedTrace   = true,
-    nopPadded          = false,
+    nopPadded          = nopPadded,
     breakPoints        = Nil, // not implemented
     testName           = singleTest)
 
