@@ -32,6 +32,7 @@ class Execute extends MultiIOModule {
       val ALUResult          = Output(UInt())
       val branchAddr         = Output(UInt())
       val branch             = Output(UInt())
+      val freeze             = Output(Bool())
     }
   )
 
@@ -45,7 +46,8 @@ class Execute extends MultiIOModule {
   val alu_operand2            = Wire(UInt())
   val alu_operand_2_forwarded = Wire(UInt())
   val alu_result              = Wire(UInt())
-
+  val freeze_rs1              = Wire(Bool())
+  val freeze_rs2              = Wire(Bool())
 
   //////////////////////
   // Branch condition //
@@ -70,7 +72,7 @@ class Execute extends MultiIOModule {
   Rs1Forwarder.rdMEMB             := io.rdMEMB
   Rs1Forwarder.ALUresultMEMB      := io.ALUresultMEMB
   alu_operand_1_forwarded         := Rs1Forwarder.operandData
-
+  freeze_rs1                      := Rs1Forwarder.freeze
 
   Rs2Forwarder.regAddr            := io.instruction.registerRs2
   Rs2Forwarder.controlSignalsEXB  := io.controlSignalsEXB
@@ -81,9 +83,10 @@ class Execute extends MultiIOModule {
   Rs2Forwarder.rdMEMB             := io.rdMEMB
   Rs2Forwarder.ALUresultMEMB      := io.ALUresultMEMB
   alu_operand_2_forwarded         := Rs2Forwarder.operandData
+  freeze_rs2                      := Rs2Forwarder.freeze
 
-
-
+  //stall signal to IDBarrier and EXBarrier
+  io.freeze := freeze_rs1 | freeze_rs2
 
   /////////
   // ALU //

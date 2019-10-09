@@ -1,7 +1,7 @@
 package FiveStage
 import chisel3._
-import chisel3.util.{ BitPat, MuxCase }
-import chisel3.experimental.MultiIOModule
+import chisel3.util._
+import chisel3.experimental._
 
 
 class EXBarrier extends MultiIOModule {
@@ -15,6 +15,8 @@ class EXBarrier extends MultiIOModule {
       val inRs2             = Input(UInt(5.W))
       val inALUResult       = Input(UInt(32.W))
 
+      val freeze            = Input(Bool())
+
       val outBranchAddr     = Output(UInt())
       val outBranch         = Output(UInt())
       val outALUResult      = Output(UInt())
@@ -24,33 +26,27 @@ class EXBarrier extends MultiIOModule {
     }
   )
 
-  val branchAddr        = RegInit(UInt(), 0.U)
-  val branch            = RegInit(UInt(), 0.U)
-  val ALUResultReg      = RegInit(UInt(), 0.U)
-  val controlSignalsReg = Reg(new ControlSignals)
-  val rdReg             = RegInit(UInt(), 0.U)
-  val rs2Reg            = RegInit(UInt(), 0.U)
+  val branchAddr        = RegEnable(io.inBranchAddr, 0.U, !io.freeze)
+  val branch            = RegEnable(io.inBranch, 0.U, !io.freeze)
+  val ALUResultReg      = RegEnable(io.inALUResult, 0.U, !io.freeze)
+  val controlSignalsReg = RegEnable(io.inControlSignals, !io.freeze)
+  val rdReg             = RegEnable(io.inRd, 0.U, !io.freeze)
+  val rs2Reg            = RegEnable(io.inRs2, 0.U, !io.freeze)
 
-  branchAddr           := io.inBranchAddr
   io.outBranchAddr     := branchAddr
 
-  branch               := io.inBranch
   io.outBranch         := branch
 
   //control singals register
-  controlSignalsReg    := io.inControlSignals
   io.outControlSignals := controlSignalsReg
 
   //immediate data register
-  rdReg                := io.inRd
   io.outRd             := rdReg
 
   //reg B register
-  rs2Reg              := io.inRs2
   io.outRs2           := rs2Reg
 
   //ALU result register
-  ALUResultReg         := io.inALUResult
   io.outALUResult      := ALUResultReg
 }
 

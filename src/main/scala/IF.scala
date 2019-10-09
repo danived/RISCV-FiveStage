@@ -26,6 +26,7 @@ class InstructionFetch extends MultiIOModule {
       val branchAddr     = Input(UInt())
       val controlSignals = Input(new ControlSignals)
       val branch         = Input(UInt())
+      val freeze         = Input(Bool())
 
       val PC             = Output(UInt())
       val instruction    = Output(new Instruction)
@@ -35,6 +36,7 @@ class InstructionFetch extends MultiIOModule {
   val IMEM        = Module(new IMEM)
   val nextPC      = WireInit(UInt(), 0.U)
   val PC          = RegInit(UInt(32.W), 0.U)
+  
 
   val instruction = Wire(new Instruction)
   val branch      = WireInit(Bool(), false.B)
@@ -51,27 +53,35 @@ class InstructionFetch extends MultiIOModule {
   IMEM.io.instructionAddress := PC
 
 
-  //Mux for controlling which address to go to next
-  //Either the incremented PC or branch address in the case of a jump or branch
-  when(io.controlSignals.jump | (io.controlSignals.branch & io.branch === 1.U)){
-    //Branch Addr
-    PC := io.branchAddr
+  //Freeze PC if stall
+  when(io.freeze){
+    PC     := PC
+    io.PC  := PC
 
-    //Send the branch address to the rest of the pipeline
-    io.PC := io.branchAddr
   }.otherwise{
-    //Incremented PC
-    PC := nextPC
-    
-    //Send the PC to the rest of the pipeline
-    io.PC := PC
+
+
+    //Mux for controlling which address to go to next
+    //Either the incremented PC or branch address in the case of a jump or branch
+    when(io.controlSignals.jump | (io.controlSignals.branch & io.branch === 1.U)){
+      //Branch Addr
+      PC := io.branchAddr
+
+      //Send the branch address to the rest of the pipeline
+      io.PC := io.branchAddr
+    }.otherwise{
+      //Incremented PC
+      PC := nextPC
+      
+      //Send the PC to the rest of the pipeline
+      io.PC := PC
+    }
   }
-
-  instruction := IMEM.io.instruction.asTypeOf(new Instruction)
-
 
   //Incremented PC
   nextPC := PC + 4.U
+
+  instruction := IMEM.io.instruction.asTypeOf(new Instruction)
 
   io.instruction := instruction
 

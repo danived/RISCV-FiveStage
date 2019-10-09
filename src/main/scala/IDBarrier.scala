@@ -37,7 +37,7 @@ class IDBarrier extends MultiIOModule {
       val inReadData1       = Input(UInt(32.W))
       val inReadData2       = Input(UInt(32.W))
 
-      val freeze = Input(Bool())
+      val freeze            = Input(Bool())
 
       //Output from register - registers signals
       val outReadData1      = Output(UInt(32.W))

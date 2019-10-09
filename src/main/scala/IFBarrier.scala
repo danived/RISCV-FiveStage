@@ -18,13 +18,14 @@ class IFBarrier extends MultiIOModule {
     }
   )
 
-  val currentPCReg   = RegInit(UInt(), 0.U)
-  val InstructionReg = RegInit(UInt(), 0.U)
+  //val currentPCReg   = RegInit(UInt(), 0.U)
+  val InstructionReg = Reg(new Instruction)
 
   //current PC
-  currentPCReg := io.inCurrentPC
-  io.outCurrentPC := currentPCReg
+  //  currentPCReg := io.inCurrentPC
+  io.outCurrentPC := io.inCurrentPC
 
   //Instruction
-  io.outInstruction := io.inInstruction
+  InstructionReg := io.inInstruction
+  io.outInstruction := InstructionReg
 }

@@ -50,10 +50,19 @@ class CPU extends MultiIOModule {
   testHarness.memUpdates                := MEM.testHarness.testUpdates
   testHarness.currentPC                 := IF.testHarness.PC
 
-  //Branch addr to IF
+
+
+
+
+
+  ///////////////////////
+  // Branch addr to IF //
+  ///////////////////////
   IF.io.branchAddr            := EXBarrier.outBranchAddr
   IF.io.controlSignals        := EXBarrier.outControlSignals
   IF.io.branch                := EXBarrier.outBranch
+  //stall
+  IF.io.freeze                := EX.io.freeze
 
   //Signals to IFBarrier
   IFBarrier.inCurrentPC       := IF.io.PC
@@ -76,7 +85,8 @@ class CPU extends MultiIOModule {
   IDBarrier.inALUop          := ID.io.ALUop
   IDBarrier.inReadData1      := ID.io.readData1
   IDBarrier.inReadData2      := ID.io.readData2
-  IDBarrier.freeze           := false.B
+  //Stalling
+  IDBarrier.freeze           := EX.io.freeze
 
   //Execute stage
   EX.io.instruction           := IDBarrier.outInstruction
@@ -102,6 +112,8 @@ class CPU extends MultiIOModule {
   EXBarrier.inBranch          := EX.io.branch
   EXBarrier.inRd              := IDBarrier.outRd
   EXBarrier.inRs2             := IDBarrier.outReadData2
+  //Stalling
+  EXBarrier.freeze            := EX.io.freeze
 
   //MEM stage
   MEM.io.dataIn               := EXBarrier.outRs2
@@ -115,6 +127,9 @@ class CPU extends MultiIOModule {
   MEMBarrier.inRs2            := EXBarrier.outRs2
   MEMBarrier.inMEMData        := MEM.io.dataOut
 
+  ///////////////
+  // MEM stage //
+  ///////////////
   //Mux for which data to write to register
   when(MEMBarrier.outControlSignals.memToReg){
     ID.io.registerWriteData := MEMBarrier.outMEMData

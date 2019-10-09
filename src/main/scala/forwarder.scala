@@ -17,6 +17,7 @@ class Forwarder extends MultiIOModule {
       val ALUresultMEMB      = Input(UInt())
 
       val operandData        = Output(UInt())
+      val freeze             = Output(Bool())
     }
   )
 
@@ -53,4 +54,11 @@ class Forwarder extends MultiIOModule {
   }
 
 
+  //check if load instruction and we should forward
+  //Then we need to stall the pipeline
+  when(io.controlSignalsMEMB.memToReg & (forward & (forwardSelect === ForwardSelect.MEM))){
+    io.freeze := true.B
+  }.otherwise{
+    io.freeze := false.B
+  }
 }
