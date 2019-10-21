@@ -144,7 +144,7 @@ private class ChiselTestRunner (
 
   // After finishing, let the circuit run until all updates can be committed.
   private def flush: List[CircuitTrace] =
-    (0 to 3).map(_ => stepOne).reverse.toList
+    (0 to 4).map(_ => stepOne).reverse.toList
 
   /**
     * Run the entire shebang
@@ -167,7 +167,7 @@ object ChiselTestRunner {
 
     val error: Either[String, Boolean] = scala.util.Try {
 //      chisel3.iotesters.Driver(() => new Tile(), "treadle") { c =>
-      Waveform.runWithWaveform("TestRun", () => new Tile()){ c =>
+      Waveform.runWithWaveform("load4", () => new Tile()){ c =>
         new PeekPokeTester(c) {
           val testRunner = new ChiselTestRunner(
             binary,

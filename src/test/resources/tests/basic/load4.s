@@ -6,7 +6,14 @@ main:
     nop
     lw x1, 0(x1)
     lw x1, 0(x1)
+    lw x1, 0(x1)
+    lw x1, 0(x1)    
     nop
+    nop
+    nop
+    nop
+    nop
+    nop 
     nop
     done
 #memset 0x0,  4

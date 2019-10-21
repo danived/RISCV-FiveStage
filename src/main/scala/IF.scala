@@ -26,7 +26,9 @@ class InstructionFetch extends MultiIOModule {
       val branchAddr     = Input(UInt())
       val controlSignals = Input(new ControlSignals)
       val branch         = Input(UInt())
+      val IFBarrierPC    = Input(UInt())
       val freeze         = Input(Bool())
+
 
       val PC             = Output(UInt())
       val instruction    = Output(new Instruction)
@@ -50,7 +52,7 @@ class InstructionFetch extends MultiIOModule {
 
 
 
-  IMEM.io.instructionAddress := PC
+
 
 
   //Freeze PC if stall
@@ -60,6 +62,9 @@ class InstructionFetch extends MultiIOModule {
 
     //Incremented PC
     nextPC := PC
+
+    //fetch instruction
+    IMEM.io.instructionAddress := io.IFBarrierPC
 
   }.otherwise{
 
@@ -82,6 +87,9 @@ class InstructionFetch extends MultiIOModule {
 
     //Incremented PC
     nextPC := PC + 4.U
+
+    //fetch instruction
+    IMEM.io.instructionAddress := PC
   }
 
 

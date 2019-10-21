@@ -33,6 +33,8 @@ class Execute extends MultiIOModule {
       val branchAddr         = Output(UInt())
       val branch             = Output(UInt())
       val freeze             = Output(Bool())
+      val Rs1Forwarded       = Output(UInt())
+      val Rs2Forwarded       = Output(UInt())
     }
   )
 
@@ -105,6 +107,10 @@ class Execute extends MultiIOModule {
   }.otherwise{
     alu_operand2    := io.immData
   }
+
+  //output forwarded operands
+  io.Rs1Forwarded := alu_operand_1_forwarded
+  io.Rs2Forwarded := alu_operand_2_forwarded
 
   //ALU
   ALU.op1           :=alu_operand1
