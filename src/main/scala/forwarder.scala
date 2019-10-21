@@ -23,17 +23,31 @@ class Forwarder extends MultiIOModule {
 
   val forward       = Wire(Bool())
   val forwardSelect = Wire(UInt())
+  val freezeReg     = RegInit(Bool(), false.B)
 
-  //check if data should be forwarded
-  when((io.regAddr === io.rdEXB) & io.controlSignalsEXB.regWrite){
-    forward := true.B
-    forwardSelect := ForwardSelect.EX
+  when((io.regAddr =/= 0.U) & (io.regAddr === io.rdEXB) & io.controlSignalsEXB.regWrite){
+    //Freeze and forward
+    when(io.controlSignalsEXB.memToReg){
+      io.freeze     := true.B
 
-  }.elsewhen((io.regAddr === io.rdMEMB) & io.controlSignalsMEMB.regWrite){
-    forward := true.B
-    forwardSelect := ForwardSelect.MEM
-  }
-  .otherwise{
+      forward       := true.B
+      forwardSelect := ForwardSelect.EX
+
+      //normal forward
+    }.otherwise{
+      io.freeze     := false.B
+      forward       := true.B
+      forwardSelect := ForwardSelect.EX
+
+    }
+  }.elsewhen((io.regAddr =/= 0.U) & (io.regAddr === io.rdMEMB) & io.controlSignalsMEMB.regWrite){
+    io.freeze       := false.B
+
+    forward         := true.B
+    forwardSelect   := ForwardSelect.MEM
+
+  }.otherwise{
+    io.freeze     := false.B
     forward       := false.B
     forwardSelect := ForwardSelect.DC
   }
@@ -54,11 +68,21 @@ class Forwarder extends MultiIOModule {
   }
 
 
-  //check if load instruction and we should forward
+  //check if load instruction and rdMEMB equals rdEXB
   //Then we need to stall the pipeline
-  when(io.controlSignalsMEMB.memToReg & (forward & (forwardSelect === ForwardSelect.MEM))){
-    io.freeze := true.B
-  }.otherwise{
-    io.freeze := false.B
-  }
+  //   when(io.controlSignalsEXB.memToReg & (io.regAddr === io.rdEXB)){
+  //     //Only freeze for one cycle
+  // //    when(!freezeReg){
+  //       forward := true.B
+  //       forwardSelect := ForwardSelect.EX
+
+  //       io.freeze := true.B
+  // //      freezeReg := true.B
+  // //    }.otherwise{
+  //   //    io.freeze := false.B
+  // //      freezeReg := false.B
+  
+  //   }.otherwise{
+  //     io.freeze := false.B
+  //   }
 }

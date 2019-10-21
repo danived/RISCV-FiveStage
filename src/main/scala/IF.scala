@@ -58,6 +58,9 @@ class InstructionFetch extends MultiIOModule {
     PC     := PC
     io.PC  := PC
 
+    //Incremented PC
+    nextPC := PC
+
   }.otherwise{
 
 
@@ -76,10 +79,12 @@ class InstructionFetch extends MultiIOModule {
       //Send the PC to the rest of the pipeline
       io.PC := PC
     }
+
+    //Incremented PC
+    nextPC := PC + 4.U
   }
 
-  //Incremented PC
-  nextPC := PC + 4.U
+
 
   instruction := IMEM.io.instruction.asTypeOf(new Instruction)
 

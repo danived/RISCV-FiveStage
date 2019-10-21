@@ -28,25 +28,30 @@ class EXBarrier extends MultiIOModule {
 
   val branchAddr        = RegEnable(io.inBranchAddr, 0.U, !io.freeze)
   val branch            = RegEnable(io.inBranch, 0.U, !io.freeze)
-  val ALUResultReg      = RegEnable(io.inALUResult, 0.U, !io.freeze)
+  val ALUResultReg      = RegEnable(io.inALUResult, 0.U, !io.freeze) // should not be frozen?
   val controlSignalsReg = RegEnable(io.inControlSignals, !io.freeze)
   val rdReg             = RegEnable(io.inRd, 0.U, !io.freeze)
   val rs2Reg            = RegEnable(io.inRs2, 0.U, !io.freeze)
 
-  io.outBranchAddr     := branchAddr
+  val freezeReg         = RegEnable(io.freeze, false.B, true.B)
 
-  io.outBranch         := branch
+  io.outBranchAddr       := branchAddr
 
-  //control singals register
-  io.outControlSignals := controlSignalsReg
+  io.outBranch           := branch
+
+  when(freezeReg){
+    io.outControlSignals := ControlSignals.nop
+  }.otherwise{
+    io.outControlSignals := controlSignalsReg
+  }
 
   //immediate data register
-  io.outRd             := rdReg
+  io.outRd               := rdReg
 
   //reg B register
-  io.outRs2           := rs2Reg
+  io.outRs2              := rs2Reg
 
   //ALU result register
-  io.outALUResult      := ALUResultReg
+  io.outALUResult        := ALUResultReg
 }
 

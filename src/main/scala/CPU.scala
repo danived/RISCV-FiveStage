@@ -31,7 +31,7 @@ class CPU extends MultiIOModule {
   val EX  = Module(new Execute)
   val MEM = Module(new MemoryFetch) 
 
-
+  val writeBackData = Wire(UInt())
 
   /**
     * Setup. You should not change this code
@@ -49,10 +49,6 @@ class CPU extends MultiIOModule {
   testHarness.regUpdates                := ID.testHarness.testUpdates
   testHarness.memUpdates                := MEM.testHarness.testUpdates
   testHarness.currentPC                 := IF.testHarness.PC
-
-
-
-
 
 
   ///////////////////////
@@ -103,11 +99,13 @@ class CPU extends MultiIOModule {
   EX.io.rdEXB                 := EXBarrier.outRd
   EX.io.ALUresultEXB          := EXBarrier.outALUResult
   EX.io.rdMEMB                := MEMBarrier.outRd
-  EX.io.ALUresultMEMB         := MEMBarrier.outALUResult
+  EX.io.ALUresultMEMB         := writeBackData
   EXBarrier.inBranchAddr      := EX.io.branchAddr
 
   //Signals to EXBarrier
   EXBarrier.inALUResult       := EX.io.ALUResult
+
+
   EXBarrier.inControlSignals  := IDBarrier.outControlSignals
   EXBarrier.inBranch          := EX.io.branch
   EXBarrier.inRd              := IDBarrier.outRd
@@ -132,8 +130,11 @@ class CPU extends MultiIOModule {
   ///////////////
   //Mux for which data to write to register
   when(MEMBarrier.outControlSignals.memToReg){
-    ID.io.registerWriteData := MEMBarrier.outMEMData
+    writeBackData := MEMBarrier.outMEMData
   }.otherwise{
-    ID.io.registerWriteData := MEMBarrier.outALUResult
+    writeBackData := MEMBarrier.outALUResult
   }
+
+  ID.io.registerWriteData := writeBackData
 }
+
