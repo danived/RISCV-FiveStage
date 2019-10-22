@@ -31,7 +31,7 @@ class Execute extends MultiIOModule {
 
       val ALUResult          = Output(UInt())
       val branchAddr         = Output(UInt())
-      val branch             = Output(UInt())
+      val branch             = Output(Bool())
       val freeze             = Output(Bool())
       val Rs1Forwarded       = Output(UInt())
       val Rs2Forwarded       = Output(UInt())

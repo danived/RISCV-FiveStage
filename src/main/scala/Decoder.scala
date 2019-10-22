@@ -51,8 +51,6 @@ class Decoder() extends Module {
     LW     -> List(Y,        Y,        Y,       N,        N,       N,    branchType.DC, rs1,       imm,       ITYPE,        ALUOps.ADD),
     SW     -> List(N,        N,        N,       Y,        N,       N,    branchType.DC, rs1,       imm,       STYPE,        ALUOps.ADD),
 
-    //load instrucitons
-//    LI     -> List(N,        Y,        N,       N,        N,       N,    branchType.DC, rs1,       imm,       ITYPE,        ALUOps.ADD),
 
     //arithmetic instructions
     ADD    -> List(N,        Y,        N,       N,        N,       N,    branchType.DC, rs1,       rs2,       ImmFormat.DC, ALUOps.ADD),
@@ -94,11 +92,6 @@ class Decoder() extends Module {
     //unsure on these instuction
     LUI    -> List(N,        Y,        N,       N,        N,       N,    branchType.DC, rs1,       imm,       UTYPE,        ALUOps.SLTU),
     AUIPC  -> List(N,        Y,        N,       N,        N,       N,    branchType.DC, rs1,       imm,       UTYPE,        ALUOps.SLTU),
-
-
-    /**
-      TODO: Fill in the blanks
-      */
   )
 
 

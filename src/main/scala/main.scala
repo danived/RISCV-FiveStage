@@ -22,7 +22,7 @@ object main {
         // Uncomment to dump .fir file
         val component = "tile"
         val f = new File(s"./output_products/fir/${component}.fir")
-//        chisel3.Driver.dumpFirrtl(chisel3.Driver.elaborate(() => new Tile()), Option(f))
+        // chisel3.Driver.dumpFirrtl(chisel3.Driver.elaborate(() => new Tile()), Option(f))
 
         //run diagrammer
 

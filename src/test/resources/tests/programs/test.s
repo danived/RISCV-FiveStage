@@ -1,9 +1,10 @@
+label:  
 main:
-	li x0, 0xFF
-	li x1, 0x600
-	li x2, 0x8EE
-	lui x3, 0xFFFBABEF		
-	addi x3, x3, -1330
-	lui x4, 0xBABE0
-	addi x4, x4, 0x7CE
-	done
+    addi x5, x0, 10
+    addi x6, x0, 20
+mylabel:   
+    addi x6, x6, -1
+    beq  x5, x6, exit      
+    jal  x0, mylabel
+exit:
+    done

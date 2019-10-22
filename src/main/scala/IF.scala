@@ -25,7 +25,7 @@ class InstructionFetch extends MultiIOModule {
     new Bundle {
       val branchAddr     = Input(UInt())
       val controlSignals = Input(new ControlSignals)
-      val branch         = Input(UInt())
+      val branch         = Input(Bool())
       val IFBarrierPC    = Input(UInt())
       val freeze         = Input(Bool())
 
@@ -77,19 +77,27 @@ class InstructionFetch extends MultiIOModule {
 
       //Send the branch address to the rest of the pipeline
       io.PC := io.branchAddr
+
+      //Incremented PC
+      nextPC := io.branchAddr + 4.U
+
+      //fetch instruction
+      IMEM.io.instructionAddress := io.branchAddr - 4.U
+
+
     }.otherwise{
       //Incremented PC
       PC := nextPC
       
       //Send the PC to the rest of the pipeline
       io.PC := PC
+
+      //Incremented PC
+      nextPC := PC + 4.U
+
+      //fetch instruction
+      IMEM.io.instructionAddress := PC
     }
-
-    //Incremented PC
-    nextPC := PC + 4.U
-
-    //fetch instruction
-    IMEM.io.instructionAddress := PC
   }
 
 

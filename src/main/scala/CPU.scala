@@ -54,9 +54,9 @@ class CPU extends MultiIOModule {
   ///////////////////////
   // Branch addr to IF //
   ///////////////////////
-  IF.io.branchAddr            := EXBarrier.outBranchAddr
+  IF.io.branchAddr            := EX.io.branchAddr
   IF.io.controlSignals        := EXBarrier.outControlSignals
-  IF.io.branch                := EXBarrier.outBranch
+  IF.io.branch                := EX.io.branch
   IF.io.IFBarrierPC           := IFBarrier.outCurrentPC
   //stall
   IF.io.freeze                := EX.io.freeze
@@ -75,6 +75,7 @@ class CPU extends MultiIOModule {
   IDBarrier.inControlSignals := ID.io.controlSignals
   IDBarrier.inBranchType     := ID.io.branchType
   IDBarrier.inPC             := IFBarrier.outCurrentPC
+  IDBarrier.inInsertBubble   := EX.io.branch
   IDBarrier.inOp1Select      := ID.io.op1Select
   IDBarrier.inOp2Select      := ID.io.op2Select
   IDBarrier.inImmData        := ID.io.immData

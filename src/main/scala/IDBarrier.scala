@@ -16,6 +16,7 @@ class IDBarrier extends MultiIOModule {
       val inControlSignals  = Input(new ControlSignals)
       val inPC              = Input(UInt(32.W))
       val inBranchType      = Input(UInt(3.W))
+      val inInsertBubble    = Input(UInt())
       val inOp1Select       = Input(UInt(1.W))
       val inOp2Select       = Input(UInt(1.W))
       val inImmData         = Input(UInt(32.W))
@@ -60,10 +61,14 @@ class IDBarrier extends MultiIOModule {
   val readData2Reg          = RegEnable(io.inReadData2, 0.U, !io.freeze)
 
   //Decoder signals registers
+
   io.outInstruction    := instructionReg
 
-  io.outControlSignals := controlSignalsReg
-
+  when(io.inInsertBubble === 1.U){
+    io.outControlSignals := ControlSignals.nop
+  }.otherwise{
+    io.outControlSignals := controlSignalsReg
+  }
   io.outBranchType     := branchTypeReg
 
   io.outPC             := PCReg
