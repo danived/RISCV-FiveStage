@@ -82,7 +82,7 @@ class InstructionFetch extends MultiIOModule {
       nextPC := io.branchAddr + 4.U
 
       //fetch instruction
-      IMEM.io.instructionAddress := io.branchAddr - 4.U
+      IMEM.io.instructionAddress := io.branchAddr
 
 
     }.otherwise{

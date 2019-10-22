@@ -60,8 +60,6 @@ class Execute extends MultiIOModule {
   Branch.op2        := io.Rs2
   io.branch         := Branch.branch
 
-
-
   ////////////////
   // Forwarders //
   ////////////////
