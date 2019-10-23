@@ -52,7 +52,7 @@ class InstructionFetch extends MultiIOModule {
 
 
 
-
+  instruction := IMEM.io.instruction.asTypeOf(new Instruction)
 
 
   //Freeze PC if stall
@@ -73,7 +73,7 @@ class InstructionFetch extends MultiIOModule {
     //Either the incremented PC or branch address in the case of a jump or branch
     when(io.controlSignals.jump | (io.controlSignals.branch & io.branch === 1.U)){
       //Branch Addr
-      PC := io.branchAddr
+      PC := nextPC
 
       //Send the branch address to the rest of the pipeline
       io.PC := io.branchAddr
@@ -83,7 +83,6 @@ class InstructionFetch extends MultiIOModule {
 
       //fetch instruction
       IMEM.io.instructionAddress := io.branchAddr
-
 
     }.otherwise{
       //Incremented PC
@@ -97,14 +96,13 @@ class InstructionFetch extends MultiIOModule {
 
       //fetch instruction
       IMEM.io.instructionAddress := PC
+
     }
   }
 
-
-
-  instruction := IMEM.io.instruction.asTypeOf(new Instruction)
-
   io.instruction := instruction
+  
+
 
   /**
     * Setup. You should not change this code.

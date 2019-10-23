@@ -12,7 +12,7 @@ class IFBarrier extends MultiIOModule {
     new Bundle {
       val inCurrentPC     = Input(UInt(32.W))
       val inInstruction   = Input(new Instruction)
-      //val inBubble        = Input(Bool())
+      val insertBubble    = Input(Bool())
 
       val outCurrentPC    = Output(UInt(32.W))
       val outInstruction  = Output(new Instruction)
@@ -22,15 +22,12 @@ class IFBarrier extends MultiIOModule {
   val currentPCReg   = RegInit(UInt(), 0.U)
   //val InstructionReg = Reg(new Instruction)
 
-  currentPCReg := io.inCurrentPC
   //current PC
-  // when(inBubble){
-  //   io.outCurrentPC := ControlSignals.nop
-  // }.otherwise{
-    io.outCurrentPC := currentPCReg
-  // }
+  currentPCReg := io.inCurrentPC
+  io.outCurrentPC := currentPCReg
+
 
   //Instruction
-//  InstructionReg := io.inInstruction
   io.outInstruction := io.inInstruction
+
 }

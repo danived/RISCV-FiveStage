@@ -18,7 +18,7 @@ import LogParser._
 
 object Manifest {
 
-  val singleTest = "test.s"
+  val singleTest = "naiveFib.s"
 
   val nopPadded = false
 

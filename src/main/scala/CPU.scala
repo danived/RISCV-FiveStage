@@ -54,9 +54,9 @@ class CPU extends MultiIOModule {
   ///////////////////////
   // Branch addr to IF //
   ///////////////////////
-  IF.io.branchAddr            := EX.io.branchAddr
+  IF.io.branchAddr            := EXBarrier.outBranchAddr
   IF.io.controlSignals        := EXBarrier.outControlSignals
-  IF.io.branch                := EX.io.branch
+  IF.io.branch                := EXBarrier.outBranch
   IF.io.IFBarrierPC           := IFBarrier.outCurrentPC
   //stall
   IF.io.freeze                := EX.io.freeze
@@ -64,6 +64,7 @@ class CPU extends MultiIOModule {
   //Signals to IFBarrier
   IFBarrier.inCurrentPC       := IF.io.PC
   IFBarrier.inInstruction     := IF.io.instruction
+  IFBarrier.insertBubble      := EX.io.insertBubble
 
   //Decode stage
   ID.io.instruction           := IFBarrier.outInstruction
@@ -75,7 +76,7 @@ class CPU extends MultiIOModule {
   IDBarrier.inControlSignals := ID.io.controlSignals
   IDBarrier.inBranchType     := ID.io.branchType
   IDBarrier.inPC             := IFBarrier.outCurrentPC
-  IDBarrier.inInsertBubble   := EX.io.branch
+  IDBarrier.inInsertBubble   := EXBarrier.outInsertBubble
   IDBarrier.inOp1Select      := ID.io.op1Select
   IDBarrier.inOp2Select      := ID.io.op2Select
   IDBarrier.inImmData        := ID.io.immData
@@ -88,6 +89,7 @@ class CPU extends MultiIOModule {
 
   //Execute stage
   EX.io.instruction           := IDBarrier.outInstruction
+  EX.io.controlSignals        := IDBarrier.outControlSignals
   EX.io.controlSignalsEXB     := EXBarrier.outControlSignals
   EX.io.controlSignalsMEMB    := MEMBarrier.outControlSignals
   EX.io.PC                    := IDBarrier.outPC
@@ -102,16 +104,17 @@ class CPU extends MultiIOModule {
   EX.io.ALUresultEXB          := EXBarrier.outALUResult
   EX.io.rdMEMB                := MEMBarrier.outRd
   EX.io.ALUresultMEMB         := writeBackData
-  EXBarrier.inBranchAddr      := EX.io.branchAddr
+
 
   //Signals to EXBarrier
   EXBarrier.inALUResult       := EX.io.ALUResult
-
+  EXBarrier.inBranchAddr      := EX.io.branchAddr
 
   EXBarrier.inControlSignals  := IDBarrier.outControlSignals
   EXBarrier.inBranch          := EX.io.branch
   EXBarrier.inRd              := IDBarrier.outRd
   EXBarrier.inRs2             := EX.io.Rs2Forwarded
+  EXBarrier.inInsertBubble    := EX.io.insertBubble
   //Stalling
   EXBarrier.freeze            := EX.io.freeze
 

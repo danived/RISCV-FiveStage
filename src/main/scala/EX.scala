@@ -12,6 +12,7 @@ class Execute extends MultiIOModule {
   val io = IO(
     new Bundle {
       val instruction        = Input(new Instruction)
+      val controlSignals     = Input(new ControlSignals)
       val controlSignalsEXB  = Input(new ControlSignals)
       val controlSignalsMEMB = Input(new ControlSignals)
       val PC                 = Input(UInt())
@@ -32,6 +33,7 @@ class Execute extends MultiIOModule {
       val ALUResult          = Output(UInt())
       val branchAddr         = Output(UInt())
       val branch             = Output(Bool())
+      val insertBubble       = Output(Bool())
       val freeze             = Output(Bool())
       val Rs1Forwarded       = Output(UInt())
       val Rs2Forwarded       = Output(UInt())
@@ -56,9 +58,11 @@ class Execute extends MultiIOModule {
   //////////////////////
 
   Branch.branchType := io.branchType
-  Branch.op1        := io.rs1
-  Branch.op2        := io.Rs2
-  io.branch         := Branch.branch
+  Branch.op1        := alu_operand_1_forwarded
+  Branch.op2        := alu_operand_2_forwarded
+  io.branch         := Branch.branchConditionMet
+
+  io.insertBubble := io.controlSignals.jump | (io.controlSignals.branch & Branch.branchConditionMet  === 1.U)
 
   ////////////////
   // Forwarders //

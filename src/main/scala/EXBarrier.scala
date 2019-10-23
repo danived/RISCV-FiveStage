@@ -14,6 +14,7 @@ class EXBarrier extends MultiIOModule {
       val inRd              = Input(UInt(5.W))
       val inRs2             = Input(UInt(5.W))
       val inALUResult       = Input(UInt(32.W))
+      val inInsertBubble    = Input(Bool())
 
       val freeze            = Input(Bool())
 
@@ -23,6 +24,7 @@ class EXBarrier extends MultiIOModule {
       val outControlSignals = Output(new ControlSignals)
       val outRd             = Output(UInt())
       val outRs2            = Output(UInt())
+      val outInsertBubble   = Output(Bool())
     }
   )
 
@@ -32,6 +34,7 @@ class EXBarrier extends MultiIOModule {
   val controlSignalsReg = RegEnable(io.inControlSignals, !io.freeze)
   val rdReg             = RegEnable(io.inRd, 0.U, !io.freeze)
   val rs2Reg            = RegEnable(io.inRs2, 0.U, !io.freeze)
+  val insertBubbleReg   = RegEnable(io.inInsertBubble, false.B, !io.freeze)
 
   val freezeReg         = RegEnable(io.freeze, false.B, true.B)
 
@@ -44,6 +47,9 @@ class EXBarrier extends MultiIOModule {
   }.otherwise{
     io.outControlSignals := controlSignalsReg
   }
+
+  io.outInsertBubble := insertBubbleReg
+
 
   //immediate data register
   io.outRd               := rdReg

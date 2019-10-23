@@ -12,11 +12,11 @@ class Branch extends MultiIOModule {
 
   val io = IO(
     new Bundle {
-      val branchType = Input(UInt())
-      val op1        = Input(UInt())
-      val op2        = Input(UInt())
+      val branchType         = Input(UInt())
+      val op1                = Input(UInt())
+      val op2                = Input(UInt())
 
-      val branch     = Output(UInt())
+      val branchConditionMet = Output(UInt())
     }
   )
  
@@ -35,6 +35,6 @@ class Branch extends MultiIOModule {
 
   )
 
-  io.branch := MuxLookup(io.branchType, 0.U(1.W), branchMap)
+  io.branchConditionMet := MuxLookup(io.branchType, 0.U(1.W), branchMap)
 }
 

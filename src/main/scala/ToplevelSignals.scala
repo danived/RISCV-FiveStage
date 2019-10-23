@@ -32,7 +32,7 @@ class Instruction extends Bundle(){
 object Instruction {
   def NOP: Instruction = {
     val w = Wire(new Instruction)
-    w.instruction := BitPat.bitPatToUInt(BitPat("b00000000000000000000000000010011"))
+    w.instruction := BitPat.bitPatToUInt(BitPat("b0000000000000000000000000110011"))
     w
   }
 }

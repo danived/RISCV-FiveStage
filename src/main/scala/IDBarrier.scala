@@ -60,15 +60,20 @@ class IDBarrier extends MultiIOModule {
   val readData1Reg          = RegEnable(io.inReadData1, 0.U, !io.freeze)
   val readData2Reg          = RegEnable(io.inReadData2, 0.U, !io.freeze)
 
-  //Decoder signals registers
+  //Instruction
+  when(io.inInsertBubble === 1.U){
+    instructionReg    := Instruction.NOP
+  }
+
+  //control signals
+  when(io.inInsertBubble === 1.U){
+    controlSignalsReg := ControlSignals.nop
+  }
 
   io.outInstruction    := instructionReg
 
-  when(io.inInsertBubble === 1.U){
-    io.outControlSignals := ControlSignals.nop
-  }.otherwise{
-    io.outControlSignals := controlSignalsReg
-  }
+  io.outControlSignals := controlSignalsReg
+
   io.outBranchType     := branchTypeReg
 
   io.outPC             := PCReg

@@ -4,7 +4,9 @@ main:
     addi x6, x0, 20
 mylabel:   
     addi x6, x6, -1
-    beq  x5, x6, exit      
+    beq  x5, x6, exit
     jal  x0, mylabel
 exit:
+    nop
+    nop
     done
