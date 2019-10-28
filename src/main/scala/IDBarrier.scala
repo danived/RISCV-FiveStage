@@ -60,13 +60,15 @@ class IDBarrier extends MultiIOModule {
   val readData1Reg          = RegEnable(io.inReadData1, 0.U, !io.freeze)
   val readData2Reg          = RegEnable(io.inReadData2, 0.U, !io.freeze)
 
-  //Instruction
-  when(io.inInsertBubble === 1.U){
+  val insertBubbleReg       = RegEnable(io.inInsertBubble, 0.U, !io.freeze)
+
+  //Bubble instruction for two cycles
+  when(io.inInsertBubble === 1.U | insertBubbleReg === 1.U){
     instructionReg    := Instruction.NOP
   }
 
-  //control signals
-  when(io.inInsertBubble === 1.U){
+  //Bubble control signals for two cycles
+  when(io.inInsertBubble === 1.U | insertBubbleReg === 1.U){
     controlSignalsReg := ControlSignals.nop
   }
 

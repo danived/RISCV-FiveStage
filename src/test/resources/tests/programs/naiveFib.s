@@ -6,6 +6,7 @@ main:
 	li	a0,6
 	call	f
 	mv	a5,a0
+    nop
 	mv	a0,a5
 	lw	ra,12(sp)
 	lw	s0,8(sp)

@@ -12,7 +12,7 @@ class EXBarrier extends MultiIOModule {
       val inBranch          = Input(UInt(1.W))
       val inControlSignals  = Input(new ControlSignals)
       val inRd              = Input(UInt(5.W))
-      val inRs2             = Input(UInt(5.W))
+      val inRs2             = Input(UInt(32.W))
       val inALUResult       = Input(UInt(32.W))
       val inInsertBubble    = Input(Bool())
 

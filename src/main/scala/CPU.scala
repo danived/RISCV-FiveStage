@@ -64,7 +64,6 @@ class CPU extends MultiIOModule {
   //Signals to IFBarrier
   IFBarrier.inCurrentPC       := IF.io.PC
   IFBarrier.inInstruction     := IF.io.instruction
-  IFBarrier.insertBubble      := EX.io.insertBubble
 
   //Decode stage
   ID.io.instruction           := IFBarrier.outInstruction
@@ -76,7 +75,7 @@ class CPU extends MultiIOModule {
   IDBarrier.inControlSignals := ID.io.controlSignals
   IDBarrier.inBranchType     := ID.io.branchType
   IDBarrier.inPC             := IFBarrier.outCurrentPC
-  IDBarrier.inInsertBubble   := EXBarrier.outInsertBubble
+  IDBarrier.inInsertBubble   := EX.io.insertBubble
   IDBarrier.inOp1Select      := ID.io.op1Select
   IDBarrier.inOp2Select      := ID.io.op2Select
   IDBarrier.inImmData        := ID.io.immData

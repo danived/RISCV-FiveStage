@@ -1,21 +1,19 @@
 [*]
 [*] GTKWave Analyzer v3.3.98 (w)1999-2019 BSI
-[*] Tue Oct 22 17:20:17 2019
+[*] Mon Oct 28 12:04:10 2019
 [*]
 [dumpfile] "/media/daniel/Data/Data/NTNU/TDT4255-Computer_Design/RISCV-FiveStage/waveform/load4.vcd"
-[dumpfile_mtime] "Tue Oct 22 17:19:12 2019"
-[dumpfile_size] 86857
+[dumpfile_mtime] "Mon Oct 28 11:56:55 2019"
+[dumpfile_size] 152954
 [savefile] "/media/daniel/Data/Data/NTNU/TDT4255-Computer_Design/RISCV-FiveStage/waveform/cpu.gtkw"
-[timestart] 442
-[size] 2560 1381
+[timestart] 668
+[size] 1920 1027
 [pos] -1 -1
-*-4.026490 586 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-4.262969 717 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] Tile.
 [treeopen] Tile.CPU.
 [treeopen] Tile.CPU.EX.
 [treeopen] Tile.CPU.EXBarrier.
-[treeopen] Tile.CPU.ID.
-[treeopen] Tile.CPU.MEM.
 [treeopen] Tile.CPU.MEM.DMEM.
 [sst_width] 327
 [signals_width] 375
@@ -23,21 +21,199 @@
 [sst_vpaned_height] 390
 @28
 Tile.CPU.clock
-@800201
+@800200
 -IF
-@23
+@22
 [color] 1
 Tile.CPU.IF.io_PC[31:0]
 Tile.CPU.IF.nextPC[31:0]
 Tile.CPU.IF.io_instruction_instruction[31:0]
-@29
+@28
 Tile.CPU.IF.io_branch
-@23
+@22
 Tile.CPU.IF.io_branchAddr[31:0]
-@29
+@28
 Tile.CPU.IF.io_controlSignals_branch
 Tile.CPU.IF.io_controlSignals_jump
-@1000201
+@1000200
+-IF
+@800200
+-Register File
+@22
+Tile.CPU.ID.registers.writeAddress[4:0]
+Tile.CPU.ID.registers.writeData[31:0]
+@28
+[color] 3
+Tile.CPU.ID.registers.writeEnable
+@22
+Tile.CPU.ID.registers.registerFile_0[31:0]
+Tile.CPU.ID.registers.registerFile_1[31:0]
+Tile.CPU.ID.registers.registerFile_2[31:0]
+Tile.CPU.ID.registers.registerFile_3[31:0]
+Tile.CPU.ID.registers.registerFile_4[31:0]
+Tile.CPU.ID.registers.registerFile_5[31:0]
+Tile.CPU.ID.registers.registerFile_6[31:0]
+Tile.CPU.ID.registers.registerFile_7[31:0]
+Tile.CPU.ID.registers.registerFile_8[31:0]
+Tile.CPU.ID.registers.registerFile_9[31:0]
+Tile.CPU.ID.registers.registerFile_10[31:0]
+Tile.CPU.ID.registers.registerFile_11[31:0]
+Tile.CPU.ID.registers.registerFile_12[31:0]
+Tile.CPU.ID.registers.registerFile_13[31:0]
+Tile.CPU.ID.registers.registerFile_14[31:0]
+Tile.CPU.ID.registers.registerFile_15[31:0]
+Tile.CPU.ID.registers.registerFile_16[31:0]
+Tile.CPU.ID.registers.registerFile_17[31:0]
+Tile.CPU.ID.registers.registerFile_18[31:0]
+Tile.CPU.ID.registers.registerFile_19[31:0]
+Tile.CPU.ID.registers.registerFile_20[31:0]
+Tile.CPU.ID.registers.registerFile_21[31:0]
+Tile.CPU.ID.registers.registerFile_22[31:0]
+Tile.CPU.ID.registers.registerFile_23[31:0]
+Tile.CPU.ID.registers.registerFile_24[31:0]
+Tile.CPU.ID.registers.registerFile_25[31:0]
+Tile.CPU.ID.registers.registerFile_26[31:0]
+Tile.CPU.ID.registers.registerFile_27[31:0]
+Tile.CPU.ID.registers.registerFile_28[31:0]
+Tile.CPU.ID.registers.registerFile_29[31:0]
+Tile.CPU.ID.registers.registerFile_30[31:0]
+Tile.CPU.ID.registers.registerFile_31[31:0]
+@1000200
+-Register File
+@800200
+-IDBarrier
+@22
+Tile.CPU.ID.io_instruction_instruction[31:0]
+Tile.CPU.IDBarrier.io_outALUop[3:0]
+@28
+Tile.CPU.IDBarrier.io_outControlSignals_memToReg
+Tile.CPU.IDBarrier.io_outControlSignals_memWrite
+Tile.CPU.IDBarrier.io_outControlSignals_regWrite
+Tile.CPU.IDBarrier.io_outOp2Select
+@22
+Tile.CPU.IDBarrier.io_outRd[4:0]
+Tile.CPU.IDBarrier.io_outReadData1[31:0]
+Tile.CPU.IDBarrier.io_outReadData2[31:0]
+@28
+Tile.CPU.IDBarrier.io_inInsertBubble
+@1000200
+-IDBarrier
+@800200
+-EX
+@22
+Tile.CPU.EX.io_PC[31:0]
+Tile.CPU.EX.io_instruction_instruction[31:0]
+@800200
+-ALU
+@22
+Tile.CPU.EX.io_ALUop[3:0]
+Tile.CPU.EX.ALU.io_op1[31:0]
+@28
+Tile.CPU.EX.io_op2Select
+@22
+Tile.CPU.EX.ALU.io_op2[31:0]
+Tile.CPU.EX.ALU.io_result[31:0]
+@1000200
+-ALU
+@800200
+-FW1
+@28
+Tile.CPU.EX.Forwarder.forward
+Tile.CPU.EX.Forwarder.forwardSelect
+@22
+Tile.CPU.EX.Forwarder.io_ALUresultEXB[31:0]
+Tile.CPU.EX.Forwarder.io_ALUresultMEMB[31:0]
+Tile.CPU.EX.Forwarder.io_regData[31:0]
+@28
+Tile.CPU.EX.Forwarder.io_controlSignalsMEMB_regWrite
+@22
+Tile.CPU.EX.Forwarder.io_rdMEMB[4:0]
+Tile.CPU.EX.Forwarder.io_regAddr[4:0]
+Tile.CPU.EX.Forwarder.io_operandData[31:0]
+@28
+[color] 1
+Tile.CPU.EX.Forwarder.io_freeze
+@1000200
+-FW1
+@800200
+-FW2
+@29
+Tile.CPU.EX.Forwarder_1.forward
+@28
+Tile.CPU.EX.Forwarder_1.forwardSelect
+@22
+Tile.CPU.EX.Forwarder_1.io_ALUresultEXB[31:0]
+Tile.CPU.EX.Forwarder_1.io_ALUresultMEMB[31:0]
+Tile.CPU.EX.Forwarder_1.io_regData[31:0]
+@28
+Tile.CPU.EX.Forwarder_1.io_controlSignalsMEMB_regWrite
+@22
+Tile.CPU.EX.Forwarder_1.io_rdMEMB[4:0]
+Tile.CPU.EX.Forwarder_1.io_regAddr[4:0]
+Tile.CPU.EX.Forwarder_1.io_operandData[31:0]
+@28
+[color] 1
+Tile.CPU.EX.Forwarder_1.io_freeze
+@1000200
+-FW2
+@800200
+-Branch
+@28
+Tile.CPU.EX.Branch.io_branchType[2:0]
+@22
+Tile.CPU.EX.Branch.io_op1[31:0]
+Tile.CPU.EX.Branch.io_op2[31:0]
+@28
+Tile.CPU.EX.Branch.io_branchConditionMet
+@1000200
+-Branch
+-EX
+@800200
+-ExBarrier
+@28
+Tile.CPU.EXBarrier.controlSignalsReg_branch
+Tile.CPU.EXBarrier.controlSignalsReg_jump
+Tile.CPU.EXBarrier.controlSignalsReg_memToReg
+Tile.CPU.EXBarrier.controlSignalsReg_memWrite
+Tile.CPU.EXBarrier.controlSignalsReg_regWrite
+@1000200
+-ExBarrier
+@800200
+-MEM
+@22
+Tile.CPU.MEM.io_dataAddress[31:0]
+Tile.CPU.MEM.io_dataIn[4:0]
+Tile.CPU.MEM.io_dataOut[31:0]
+@28
+Tile.CPU.MEM.io_writeEnable
+@1000200
+-MEM
+@800200
+-MEMBarrier
+@28
+Tile.CPU.MEMBarrier.io_outControlSignals_memToReg
+Tile.CPU.MEMBarrier.io_outControlSignals_regWrite
+@22
+Tile.CPU.MEMBarrier.io_outMEMData[31:0]
+@1000200
+-MEMBarrier
+@28
+Tile.CPU.clock
+@800200
+-IF
+@22
+[color] 1
+Tile.CPU.IF.io_PC[31:0]
+Tile.CPU.IF.nextPC[31:0]
+Tile.CPU.IF.io_instruction_instruction[31:0]
+@28
+Tile.CPU.IF.io_branch
+@22
+Tile.CPU.IF.io_branchAddr[31:0]
+@28
+Tile.CPU.IF.io_controlSignals_branch
+Tile.CPU.IF.io_controlSignals_jump
+@1000200
 -IF
 @800200
 -Register File
@@ -153,16 +329,17 @@ Tile.CPU.EX.Forwarder_1.io_operandData[31:0]
 Tile.CPU.EX.Forwarder_1.io_freeze
 @1000200
 -FW2
-@c00200
+@800200
 -Branch
 @28
 Tile.CPU.EX.Branch.io_branchType[2:0]
 @22
 Tile.CPU.EX.Branch.io_op1[31:0]
 Tile.CPU.EX.Branch.io_op2[31:0]
-@1401200
--Branch
+@28
+Tile.CPU.EX.Branch.io_branchConditionMet
 @1000200
+-Branch
 -EX
 @800200
 -ExBarrier
@@ -172,22 +349,6 @@ Tile.CPU.EXBarrier.controlSignalsReg_jump
 Tile.CPU.EXBarrier.controlSignalsReg_memToReg
 Tile.CPU.EXBarrier.controlSignalsReg_memWrite
 Tile.CPU.EXBarrier.controlSignalsReg_regWrite
-@c00200
--Tile.CPU.EXBarrier.ALUResultReg
-@1401200
--group_end
-@22
-Tile.CPU.EXBarrier.io_outRd[4:0]
-@c00022
-Tile.CPU.EXBarrier.rdReg[4:0]
-@28
-(0)Tile.CPU.EXBarrier.rdReg[4:0]
-(1)Tile.CPU.EXBarrier.rdReg[4:0]
-(2)Tile.CPU.EXBarrier.rdReg[4:0]
-(3)Tile.CPU.EXBarrier.rdReg[4:0]
-(4)Tile.CPU.EXBarrier.rdReg[4:0]
-@1401200
--group_end
 @1000200
 -ExBarrier
 @800200
