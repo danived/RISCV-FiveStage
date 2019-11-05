@@ -24,7 +24,6 @@ object Ops {
   sealed trait JImmediate     extends ImmType
   sealed trait ShiftImmediate extends ImmType
 
-
   sealed trait Comparison {
     def run(rs1Val: Int, rs2Val: Int): Boolean
   }
@@ -51,7 +50,10 @@ object Ops {
 
     def beqz(rs1: Int, dst: Label) = Branch(Reg(rs1), Reg(0), dst, EQ)
     def bnez(rs1: Int, dst: Label) = Branch(Reg(rs1), Reg(0), dst, NE)
-    def blez(rs1: Int, dst: Label) = Branch(Reg(rs1), Reg(0), dst, LT)
+    def blez(rs1: Int, dst: Label) = Branch(Reg(0), Reg(rs1), dst, GE)
+    def bgez(rs1: Int, dst: Label) = Branch(Reg(rs1), Reg(0), dst, GE)
+    def bltz(rs1: Int, dst: Label) = Branch(Reg(rs1), Reg(0), dst, LT)
+    def bgtz(rs1: Int, dst: Label) = Branch(Reg(0), Reg(rs1), dst, LT)
   }
 
   sealed trait someDecorator
@@ -105,22 +107,22 @@ object Ops {
     def sra( rd: Int, rs1: Int, imm: Int) = ArithImmShift(Reg(rd), Reg(rs1), Imm(imm), SRA)
   }
 
-  case class LUI(rd: Reg, imm: Imm)              extends Op with UType
-  case class AUIPC(rd: Reg, imm: Imm)            extends Op with UType
-  case class SW(rs2: Reg, rs1: Reg, offset: Imm) extends Op with SType
-  case class LW(rd: Reg, rs1: Reg, offset: Imm)  extends Op with IType
+  case class LUI(rd: Reg, imm: Imm)   extends Op with UType
+  case class AUIPC(rd: Reg, imm: Imm) extends Op with UType
 
   case class JALR(rd: Reg, rs1: Reg, dst: String) extends Op with IType
   case class JAL(rd: Reg, dst: String) extends Op with UType
+  case class SW(rs2: Reg, rs1: Reg, offset: Imm) extends Op with SType
+  case class LW(rd: Reg, rs1: Reg, offset: Imm)  extends Op with IType
 
 
   object LUI { def apply(rd: Int, imm: Int): LUI = LUI(Reg(rd), Imm(imm)) }
   object AUIPC { def apply(rd: Int, imm: Int): AUIPC = AUIPC(Reg(rd), Imm(imm)) }
-  object SW  { def apply(rs2: Int, rs1: Int, offset: Int): SW = SW(Reg(rs2), Reg(rs1), Imm(offset)) }
-  object LW  { def apply(rd: Int, rs1: Int, offset: Int): LW = LW(Reg(rd), Reg(rs1), Imm(offset)) }
 
   object JAL{ def apply(rd: Int, dst: String): JAL = JAL(Reg(rd), dst) }
   object JALR{ def apply(rd: Int, rs1: Int, dst: String): JALR = JALR(Reg(rd), Reg(rs1), dst) }
+  object SW  { def apply(rs2: Int, rs1: Int, offset: Int): SW = SW(Reg(rs2), Reg(rs1), Imm(offset)) }
+  object LW  { def apply(rd: Int, rs1: Int, offset: Int): LW = LW(Reg(rd), Reg(rs1), Imm(offset)) }
 
   // This op should not be assembled, but will for the sake of simplicity be rendered as a NOP
   case object DONE extends Op with IType { val rd = Reg(0); val rs1 = Reg(0) }
