@@ -48,7 +48,9 @@ class IDBarrier extends MultiIOModule {
 
   //Decoder signal registers
   val instructionReg        = RegEnable(io.inInstruction, !io.freeze)
+  val prevInstruction       = Wire(new Instruction)
   val controlSignalsReg     = RegEnable(io.inControlSignals, !io.freeze)
+  val prevControlSignals     = Wire(new ControlSignals)
   val branchTypeReg         = RegEnable(io.inBranchType, 0.U, !io.freeze)
   val PCReg                 = RegEnable(io.inPC, 0.U, !io.freeze)
   val op1SelectReg          = RegEnable(io.inOp1Select, 0.U, !io.freeze)
@@ -61,6 +63,7 @@ class IDBarrier extends MultiIOModule {
   val readData2Reg          = RegEnable(io.inReadData2, 0.U, !io.freeze)
 
   val insertBubbleReg       = RegEnable(io.inInsertBubble, 0.U, !io.freeze)
+  val bubbleFinishedReg     = RegEnable(insertBubbleReg, 0.U, !io.freeze)
 
   //Bubble instruction for two cycles
   when(io.inInsertBubble === 1.U | insertBubbleReg === 1.U){
@@ -71,6 +74,22 @@ class IDBarrier extends MultiIOModule {
   when(io.inInsertBubble === 1.U | insertBubbleReg === 1.U){
     controlSignalsReg := ControlSignals.nop
   }
+
+  //Restore control signals when bubble is finished
+  when(bubbleFinishedReg === 1.U){
+    controlSignalsReg := prevControlSignals
+  }
+
+  //Restore instruction when bubble is finished
+  when(bubbleFinishedReg === 1.U){
+    instructionReg := prevInstruction
+  }
+
+  //Save previous instruction
+  prevInstruction      := io.inInstruction
+
+  //Save previous control signals
+  prevControlSignals   := io.inControlSignals
 
   io.outInstruction    := instructionReg
 

@@ -76,7 +76,7 @@ class InstructionFetch extends MultiIOModule {
       PC := nextPC
 
       //Send the branch address to the rest of the pipeline
-      io.PC := io.branchAddr
+      io.PC := io.branchAddr 
 
       //Incremented PC
       nextPC := io.branchAddr + 4.U

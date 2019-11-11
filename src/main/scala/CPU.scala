@@ -64,6 +64,7 @@ class CPU extends MultiIOModule {
   //Signals to IFBarrier
   IFBarrier.inCurrentPC       := IF.io.PC
   IFBarrier.inInstruction     := IF.io.instruction
+  IFBarrier.freeze            := EX.io.freeze
 
   //Decode stage
   ID.io.instruction           := IFBarrier.outInstruction
