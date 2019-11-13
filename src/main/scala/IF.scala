@@ -68,7 +68,6 @@ class InstructionFetch extends MultiIOModule {
 
   }.otherwise{
 
-
     //Mux for controlling which address to go to next
     //Either the incremented PC or branch address in the case of a jump or branch
     when(io.controlSignals.jump | (io.controlSignals.branch & io.branch === 1.U)){
@@ -100,7 +99,11 @@ class InstructionFetch extends MultiIOModule {
     }
   }
 
-  io.instruction := instruction
+  // when(io.insertBubble){
+  //   io.instruction := Instruction.NOP
+  // }.otherwise{
+    io.instruction := instruction
+  // }
   
 
 

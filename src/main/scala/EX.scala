@@ -64,8 +64,6 @@ class Execute extends MultiIOModule {
   Branch.op2        := alu_operand_2_forwarded
   io.branch         := Branch.branchConditionMet
   
-  insertBubble      := io.controlSignals.jump | (io.controlSignals.branch & Branch.branchConditionMet  === 1.U)
-  io.insertBubble   := insertBubble
 
   ////////////////
   // Forwarders //
@@ -94,6 +92,15 @@ class Execute extends MultiIOModule {
 
   //stall signal to IDBarrier and EXBarrier
   io.freeze := freeze_rs1 | freeze_rs2
+
+  //Do not insert a bubble when freezing
+  when((freeze_rs1 | freeze_rs2) === false.B){
+    insertBubble  := io.controlSignals.jump | (io.controlSignals.branch & Branch.branchConditionMet  === 1.U)
+  }.otherwise{
+    insertBubble  := false.B
+  }
+  io.insertBubble := insertBubble
+
 
   /////////
   // ALU //

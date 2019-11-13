@@ -42,11 +42,17 @@ class EXBarrier extends MultiIOModule {
 
   io.outBranch           := branchReg
 
-  when(freezeReg){
-    io.outControlSignals := ControlSignals.nop
-  }.otherwise{
-    io.outControlSignals := controlSignalsReg
+  // when(freezeReg){
+  //   io.outControlSignals := ControlSignals.nop
+  // }.otherwise{
+  //   io.outControlSignals := controlSignalsReg
+  // }
+
+  when(io.freeze){
+    controlSignalsReg := ControlSignals.nop
   }
+
+  io.outControlSignals := controlSignalsReg
 
   io.outInsertBubble := insertBubbleReg
 

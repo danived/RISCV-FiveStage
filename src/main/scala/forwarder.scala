@@ -66,23 +66,4 @@ class Forwarder extends MultiIOModule {
     //if not forwarding, send regdata to operand
     io.operandData := io.regData
   }
-
-
-  //check if load instruction and rdMEMB equals rdEXB
-  //Then we need to stall the pipeline
-  //   when(io.controlSignalsEXB.memToReg & (io.regAddr === io.rdEXB)){
-  //     //Only freeze for one cycle
-  // //    when(!freezeReg){
-  //       forward := true.B
-  //       forwardSelect := ForwardSelect.EX
-
-  //       io.freeze := true.B
-  // //      freezeReg := true.B
-  // //    }.otherwise{
-  //   //    io.freeze := false.B
-  // //      freezeReg := false.B
-  
-  //   }.otherwise{
-  //     io.freeze := false.B
-  //   }
 }
