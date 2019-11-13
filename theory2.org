@@ -1,7 +1,7 @@
 * Question 1 - Hazards
   For the following programs describe each hazard with type (data or control), line number and a
   small (max one sentence) description
-
+  
 ** program 1
   #+begin_src asm
     addi t0,   zero,  10
@@ -12,6 +12,8 @@
     jr   ra
   #+end_src
 
+data hazard, beq uses the result of the sub operation.
+
 
 ** program 2
   #+begin_src asm
@@ -21,7 +23,7 @@
     jr   ra
   #+end_src
 
-
+control hazard, lw takes 1 cycle, beq uses the result of the lw instruction.
 ** program 3
   #+begin_src asm
   lw   t0,   0(t0)
@@ -32,6 +34,7 @@
   jr   ra
   #+end_src
 
+lw t1, 12(t0) creates a control hazard, because beq uses it, and it takes 1 cycle for a load.
 
 * Question 2 - Handling hazards
   For this question, keep in mind that the forwarder does not care if the values it forwards are being used or not!
@@ -54,6 +57,9 @@
    #+end_src
    
    For the operation currently in EX, from where (ID, MEM or WB) should the forwarder get data from for rs1 and rs2?
+
+*** Answer
+   The forwarder should get its rs1 data from ID and rs2 from WB.
    
 ** Data hazards 2
 
@@ -74,6 +80,9 @@
 
    For the operation currently in EX, from where (ID, MEM or WB) should the forwarder get data from for rs1 and rs2?
 
+*** Answe
+The forwarder should get its rs1 data from MEM and rs2 data from ID
+
 ** Data hazards 3
 
    At some cycle the following instructions can be found in a 5 stage design:
@@ -93,6 +102,9 @@
    Should the forwarding unit issue a load hazard signal?
    (Hint: what are the semantics of the instruction currently in EX stage?)
    #+end_src
+
+*** Answer
+ja?
 
 * Question 3 - Branch prediction
   Consider a 2 bit branch predictor with only 4 slots for a 32 bit architecture, where the decision to 

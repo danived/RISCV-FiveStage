@@ -3,14 +3,13 @@ main:
 	sw	ra,12(sp)
 	lw	a0,0(zero)
 	call	find
-    nop
 	lw	ra,12(sp)
 	addi	sp,sp,16
 	jr	ra
 find:
 	li	a5,4
 .L2:
-	lh	a4,2(a5)
+    lh	a4,2(a5)
 	beq	a4,a0,.L13
 .L11:
 	ble	a4,a0,.L4
