@@ -21,9 +21,20 @@ class Forwarder extends MultiIOModule {
     }
   )
 
-  val forward       = Wire(Bool())
-  val forwardSelect = Wire(UInt())
-  val freezeReg     = RegInit(Bool(), false.B)
+  val forward             = Wire(Bool())
+  val forwardSelect       = Wire(UInt())
+  val freezeReg           = RegInit(Bool(), false.B)
+  val ALUresultBonus      = RegInit(UInt(), 0.U)
+  val rdBonus             = RegInit(UInt(), 0.U)
+  val controlSignalsBONUS = Reg(new ControlSignals)
+
+
+
+  //Bonus write back register
+  ALUresultBonus := io.ALUresultMEMB
+  rdBonus := io.rdMEMB
+  controlSignalsBONUS := io.controlSignalsMEMB
+
 
   when((io.regAddr =/= 0.U) & (io.regAddr === io.rdEXB) & io.controlSignalsEXB.regWrite){
     //Freeze and forward
@@ -46,11 +57,22 @@ class Forwarder extends MultiIOModule {
     forward         := true.B
     forwardSelect   := ForwardSelect.MEM
 
-  }.otherwise{
+  }.elsewhen((io.regAddr =/= 0.U) & (io.regAddr === rdBonus) & controlSignalsBONUS.regWrite){
+    io.freeze       := false.B
+
+    forward         := true.B
+    forwardSelect   := ForwardSelect.BONUS
+
+  }
+    .otherwise{
     io.freeze     := false.B
     forward       := false.B
     forwardSelect := ForwardSelect.DC
   }
+
+
+  //Bonus write back
+  //destinatio og verdi og regwrite
 
 
   //assign correct data to operandData
@@ -58,6 +80,8 @@ class Forwarder extends MultiIOModule {
     //if forwarding, send correct forward data to operand
     when(forwardSelect === ForwardSelect.EX){
       io.operandData := io.ALUresultEXB
+    }.elsewhen(forwardSelect === ForwardSelect.BONUS){
+      io.operandData := ALUresultBonus
     }.otherwise{
       io.operandData := io.ALUresultMEMB
     }

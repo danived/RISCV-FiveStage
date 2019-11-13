@@ -23,7 +23,7 @@ class RegisterBypass extends MultiIOModule {
   )
 
 
-  when((io.readAddr === io.writeAddr) & io.writeEnable){
+  when((io.readAddr =/= 0.U) & (io.readAddr === io.writeAddr) & io.writeEnable){
     io.outData := io.writeData
   }.otherwise{
     io.outData := io.registerData

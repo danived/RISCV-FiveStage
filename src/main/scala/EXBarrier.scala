@@ -57,7 +57,7 @@ class EXBarrier extends MultiIOModule {
   io.outInsertBubble := insertBubbleReg
 
 
-  //immediate data register
+  //destination register
   io.outRd               := rdReg
 
   //reg B register

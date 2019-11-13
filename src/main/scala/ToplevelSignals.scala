@@ -63,9 +63,10 @@ object ControlSignals {
 
 
 object ForwardSelect{
-  val EX  = 0.asUInt(1.W)
-  val MEM = 1.asUInt(1.W)
-  val DC  = 0.asUInt(1.W)
+  val EX    = 0.asUInt(2.W)
+  val MEM   = 1.asUInt(2.W)
+  val BONUS = 3.asUInt(2.W)
+  val DC    = 0.asUInt(2.W)
 }
 
 object branchType {
