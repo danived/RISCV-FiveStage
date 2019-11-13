@@ -12,8 +12,8 @@
     jr   ra
   #+end_src
 
+*** Answer
 data hazard, beq uses the result of the sub operation.
-
 
 ** program 2
   #+begin_src asm
@@ -23,6 +23,7 @@ data hazard, beq uses the result of the sub operation.
     jr   ra
   #+end_src
 
+*** Answer
 control hazard, lw takes 1 cycle, beq uses the result of the lw instruction.
 ** program 3
   #+begin_src asm
@@ -34,6 +35,7 @@ control hazard, lw takes 1 cycle, beq uses the result of the lw instruction.
   jr   ra
   #+end_src
 
+*** Answer
 lw t1, 12(t0) creates a control hazard, because beq uses it, and it takes 1 cycle for a load.
 
 * Question 2 - Handling hazards
