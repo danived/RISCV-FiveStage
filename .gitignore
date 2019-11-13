@@ -360,3 +360,4 @@ _minted*
 notes.org
 *.sh
 .ccls-cache/
+*.tar.gz
