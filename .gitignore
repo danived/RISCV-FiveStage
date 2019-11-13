@@ -359,4 +359,4 @@ Edraw/
 _minted*
 notes.org
 *.sh
-exercise.pdf
+.ccls-cache/
