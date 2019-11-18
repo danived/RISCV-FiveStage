@@ -8,7 +8,7 @@ import chisel3.experimental._
 
 import branchType._
 
-class Branch extends MultiIOModule {
+class BranchConditionCheck extends MultiIOModule {
 
   val io = IO(
     new Bundle {

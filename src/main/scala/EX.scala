@@ -41,7 +41,7 @@ class Execute extends MultiIOModule {
   )
 
   val ALU          = Module(new ALU).io
-  val Branch       = Module(new Branch).io
+  val Branch       = Module(new BranchConditionCheck).io
   val Rs1Forwarder = Module(new Forwarder).io
   val Rs2Forwarder = Module(new Forwarder).io
 
